@@ -1,8 +1,7 @@
 {
-  "name": "npm-custom-apply",
+  "name": "prc.wangyc",
   "version": "1.0.0",
   "description": "自定义form组件",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,6 +10,7 @@
   "dependencies": {
     "ant-design-vue": "^2.2.8",
     "core-js": "^3.6.5",
+    "prc.wangyc": "^1.0.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.13"
   },
@@ -41,5 +41,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
