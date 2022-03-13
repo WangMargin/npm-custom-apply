@@ -1,7 +1,7 @@
-import hello from './hello'
+import hello from './hello';
 
 const customForm = {
     hello
-}
+};
 
-export default customForm
+export default customForm;

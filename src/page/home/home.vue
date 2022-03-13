@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import wangyc from 'prc.wangyc'
+import wangyc from 'prc.wangyc';
 export default {
-  components: {
-    "wangyc": wangyc.hello
-  }
-}
+    components: {
+        wangyc: wangyc.hello
+    }
+};
 </script>
 
 <style>

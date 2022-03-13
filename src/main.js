@@ -1,13 +1,13 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 
-import router from '@/router'
+import router from '@/router';
 
-import "ant-design-vue/dist/antd.css"; // or 'ant-design-vue/dist/antd.less'
-import { Input, Button } from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'; // or 'ant-design-vue/dist/antd.less'
+import { Input, Button } from 'ant-design-vue';
 
-const app = createApp(App)
+const app = createApp(App);
 app.use(router)
     .use(Input)
     .use(Button);
-app.mount('#app')
+app.mount('#app');
