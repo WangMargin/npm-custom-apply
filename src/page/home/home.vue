@@ -1,16 +1,30 @@
 <template>
   <div>
-      <h1>home</h1>
-      <a-button>HOME</a-button>
-      <wangyc></wangyc>
+    <HeaderModule></HeaderModule>
+    <PositionModule></PositionModule>
+    <a-row>
+      <a-col :xs="24" :sm="24" :md="24" :lg="16">
+<!--        学院公共服务公告栏-->
+        <ServicesNotice></ServicesNotice>
+      </a-col>
+      <a-col :xs="24" :sm="24" :md="24" :lg="8">
+<!--        我参加的公共服务事物-->
+
+<!--        我的管理职务-->
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <script>
-import wangyc from 'prc.wangyc';
+import HeaderModule from '@/components/HeaderModule/HeaderModule';
+import PositionModule from '@/components/PositionModule/PositionModule';
+import ServicesNotice from '@/components/ServicesNotice/ServicesNotice';
 export default {
     components: {
-        wangyc: wangyc.hello
+        HeaderModule,
+        PositionModule,
+        ServicesNotice
     }
 };
 </script>
