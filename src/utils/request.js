@@ -22,7 +22,7 @@ const requestHandler = config => {
   // if (savedToken) {
   //   config.headers[REQUEST_TOKEN_KEY] = 'bearer ' + savedToken;
   // }
-  config.headers['REQUEST_TOKEN_KEY'] = 'bearer ' + 'test===wangyc';
+  // config.headers['REQUEST_TOKEN_KEY'] = 'bearer ' + 'test===wangyc';
   return config;
 };
 

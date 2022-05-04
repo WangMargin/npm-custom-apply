@@ -4,6 +4,6 @@ export async function getList(params) {
   return request({
     url: api.getList,
     method: 'get',
-    data: params,
+    params: params,
   });
 }

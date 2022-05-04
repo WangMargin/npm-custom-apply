@@ -3,13 +3,15 @@
     <a-row style="width: 100%">
       <a-col :span="24">
         <a-card style="border: none">
-          <template #title>数据管理</template>
-          <a-button @click="handleAuthorization" size="default" type="primary">授权</a-button>
+          <a-button @click="handleAuthorization" size="default" type="primary" v-if="false">
+            授权
+          </a-button>
           <a-divider style="border-color: #7cb305" dashed orientation="left">
-            <a-tag color="blue">剩余点击量：45454545</a-tag>
+            <a-tag color="blue">剩余点击量：{{ state.ipSum }}</a-tag>
           </a-divider>
           <a-table
             class="ant-table-striped"
+            :pagination="false"
             :row-class-name="(_record, index) => (index % 2 === 1 ? 'table-striped' : null)"
             :columns="state.columns"
             :dataSource="state.data"
@@ -80,13 +82,13 @@ export default {
         },
       },
       columns: [
-        { dataIndex: 'date', title: '日期' },
-        { dataIndex: 'num', title: '点击数' },
+        { dataIndex: 'dateName', title: '日期' },
+        { dataIndex: 'ipNum', title: '点击数' },
       ],
       data: [
-        { date: '2020-03-12', num: parseFloat((Math.random() * 10000).toFixed(0)) },
-        { date: '2020-03-12', num: parseFloat((Math.random() * 10000).toFixed(0)) },
-        { date: '2020-03-12', num: parseFloat((Math.random() * 10000).toFixed(0)) },
+        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
+        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
+        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
       ],
     });
     onMounted(() => {
@@ -96,7 +98,8 @@ export default {
       };
       getList(params)
         .then(res => {
-          console.log(res);
+          state.ipSum = res.data.ipSum;
+          state.data = res.data.itemVOs;
         })
         .catch(err => {
           console.error(err);

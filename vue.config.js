@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/',
+  publicPath: '/pach/',
   pages: {
     app: {
       // page 的入口

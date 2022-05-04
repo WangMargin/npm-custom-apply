@@ -1,4 +1,4 @@
 const api = {
-  getList: '/yepxxoy/index/getList',
+  getList: '/api-pach/yepxxoy/index/getList',
 };
 export default api;
