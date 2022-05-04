@@ -7,7 +7,7 @@
             授权
           </a-button>
           <a-divider style="border-color: #7cb305" dashed orientation="left">
-            <a-tag color="blue">剩余点击量：{{ state.ipSum }}</a-tag>
+            <a-tag color="blue">剩余点击量：{{ state.ipSum || '-' }}</a-tag>
           </a-divider>
           <a-table
             class="ant-table-striped"
@@ -85,11 +85,7 @@ export default {
         { dataIndex: 'dateName', title: '日期' },
         { dataIndex: 'ipNum', title: '点击数' },
       ],
-      data: [
-        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
-        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
-        { dateName: '2020-03-12', ipNum: parseFloat((Math.random() * 10000).toFixed(0)) },
-      ],
+      data: [],
     });
     onMounted(() => {
       const params = {
