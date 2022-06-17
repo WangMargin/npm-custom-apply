@@ -1,5 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
+import Canvas2 from '@/views/html/2canvas.vue';
 
 const routes = [
   {
@@ -7,10 +8,15 @@ const routes = [
     name: 'home',
     component: Home,
   },
+  {
+    path: '/canvas2',
+    name: 'canvas2',
+    component: Canvas2,
+  },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

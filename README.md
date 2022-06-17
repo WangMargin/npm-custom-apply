@@ -1,5 +1,7 @@
 # v-component
 
+# 开发 html 2 canvas  自定义生成图片的功能
+
 ## Project setup
 ```
 yarn install
