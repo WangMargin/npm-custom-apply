@@ -12,6 +12,8 @@
     "lint-check": "vue-cli-service lint --no-fix"
   },
   "dependencies": {
+    "@antv/l7": "^2.8.45",
+    "@antv/l7-district": "^2.3.12",
     "@types/lodash-es": "^4.17.3",
     "ant-design-vue": "^3.2.2",
     "axios": "^0.21.1",
