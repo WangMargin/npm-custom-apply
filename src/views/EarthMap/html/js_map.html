@@ -1,97 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>map</title>
-    <script src = 'https://unpkg.com/@antv/l7'></script>
+    <meta charset="UTF-8" />
+    <title>创建地图场景</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-
-<div>
-    <div style="width:800px;height:900px;background: #f5f5f5;margin: 100px" id="earth_map"></div>
-</div>
-
+<div id="map"></div>
+<script src="https://unpkg.com/@antv/l7"></script>
 <script>
-    import { Scene, EarthLayer, LineLayer } from '@antv/l7';
-    import { Earth } from '@antv/l7-maps';
-    const scene = new Scene({
-        id: 'earth_map',
-        map: new Earth({})
-    });
-
-    // TODO: 地球模式下背景色默认为 #000 通过 setBgColor 方法我们可以设置可视化层的背景色
-    scene.setBgColor('#333');
-
-    const earthlayer = new EarthLayer()
-        .source(
-            'https://gw.alipayobjects.com/mdn/rms_23a451/afts/img/A*3-3NSpqRqUoAAAAAAAAAAAAAARQnAQ',
-            {
-                parser: {
-                    type: 'image'
-                }
-            }
-        )
-        .color('#2E8AE6')
-        .shape('fill')
-        .style({
-            globelOtions: {
-                ambientRatio: 0.6, // 环境光
-                diffuseRatio: 0.4, // 漫反射
-                specularRatio: 0.1 // 高光反射
-            }
+    const scene = new L7.Scene({
+        id: "map",
+        map: new L7.GaodeMap({
+            style: "dark", // 样式URL
+            center: [120.19382669582967, 30.258134],
+            pitch: 0,
+            zoom: 4
         })
-        .animate(true);
-
-    const atomLayer = new EarthLayer()
-        .color('#2E8AE6')
-        .shape('atomSphere')
-        .style({
-            opacity: 1
-        });
-
-    const bloomLayer = new EarthLayer().color('#fff').shape('bloomSphere')
-        .style({
-            opacity: 0.7
-        });
-
-    scene.on('loaded', () => {
-        scene.addLayer(earthlayer);
-
-        scene.addLayer(atomLayer);
-        scene.addLayer(bloomLayer);
-
-        fetch('https://gw.alipayobjects.com/os/bmw-prod/20a69b46-3d6d-4ab5-b8b5-150b6aa52c88.json')
-            .then(res => res.json())
-            .then(flydata => {
-                const flyLine = new LineLayer({ blend: 'normal' })
-                    .source(flydata, {
-                        parser: {
-                            type: 'json',
-                            coordinates: 'coord'
-                        }
-                    })
-                    .color('#b97feb')
-                    .shape('arc3d')
-                    .size(0.5)
-                    .active(true)
-                    .animate({
-                        interval: 2,
-                        trailLength: 2,
-                        duration: 1
-                    })
-                    .style({
-                        opacity: 1,
-                        segmentNumber: 60,
-                        globalArcHeight: 20
-                    });
-                scene.addLayer(flyLine);
-            });
-
-        earthlayer.setEarthTime(4.0);
     });
 
-
+    fetch(
+        "https://gw.alipayobjects.com/os/rmsportal/oVTMqfzuuRFKiDwhPSFL.json"
+    )
+        .then(res => res.json())
+        .then(data => {
+            const pointLayer = new L7.PointLayer({})
+                .source(data.list, {
+                    parser: {
+                        type: "json",
+                        x: "j",
+                        y: "w"
+                    }
+                })
+                .shape("cylinder")
+                .size("t", function(level) {
+                    return [1, 2, level * 2 + 20];
+                })
+                .color("t", [
+                    "#094D4A",
+                    "#146968",
+                    "#1D7F7E",
+                    "#289899",
+                    "#34B6B7",
+                    "#4AC5AF",
+                    "#5FD3A6",
+                    "#7BE39E",
+                    "#A1EDB8",
+                    "#CEF8D6"
+                ])
+                .style({
+                    opacity: 1.0
+                });
+            scene.addLayer(pointLayer);
+        });
 </script>
-
 </body>
 </html>

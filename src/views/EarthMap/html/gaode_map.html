@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建地图场景</title>
+    <style>
+        html,body{overflow:hidden;margin:0;}
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="https://unpkg.com/@antv/l7"></script>
+<script>
+    const scene = new L7.Scene({
+        id: 'map',
+        map: new L7.Earth({})
+    });
+
+    // TODO: 地球模式下背景色默认为 #000 通过 setBgColor 方法我们可以设置可视化层的背景色
+    scene.setBgColor('#333');
+
+    const earthlayer = new L7.EarthLayer()
+        .source(
+            'https://gw.alipayobjects.com/mdn/rms_23a451/afts/img/A*3-3NSpqRqUoAAAAAAAAAAAAAARQnAQ',
+            {
+                parser: {
+                    type: 'image'
+                }
+            }
+        )
+        .color('#2E8AE6')
+        .shape('fill')
+        .style({
+            globelOtions: {
+                ambientRatio: 0.6, // 环境光
+                diffuseRatio: 0.4, // 漫反射
+                specularRatio: 0.1 // 高光反射
+            }
+        })
+        .animate(true);
+
+    const atomLayer = new L7.EarthLayer()
+        .color('#2E8AE6')
+        .shape('atomSphere')
+        .style({
+            opacity: 1
+        });
+
+    const bloomLayer = new L7.EarthLayer().color('#fff').shape('bloomSphere')
+        .style({
+            opacity: 0.7
+        });
+
+    scene.on('loaded', () => {
+        scene.addLayer(earthlayer);
+
+        scene.addLayer(atomLayer);
+        scene.addLayer(bloomLayer);
+
+        fetch('https://gw.alipayobjects.com/os/bmw-prod/20a69b46-3d6d-4ab5-b8b5-150b6aa52c88.json')
+            .then(res => res.json())
+            .then(flydata => {
+                const flyLine = new L7.LineLayer({ blend: 'normal' })
+                    .source(flydata, {
+                        parser: {
+                            type: 'json',
+                            coordinates: 'coord'
+                        }
+                    })
+                    .color('#BB133E')
+                    .shape('arc3d')
+                    .size(0.1)
+                    .active(true)
+                    .animate({
+                        interval: 2,
+                        trailLength: 2,
+                        duration: 1
+                    })
+                    .style({
+                        opacity: 1,
+                        segmentNumber: 60,
+                        globalArcHeight: 20
+                    });
+                scene.addLayer(flyLine);
+            });
+
+        fetch('https://gw.alipayobjects.com/os/bmw-prod/efef6c2b-2922-4c03-b9e0-d3743f68eaf2.json')
+            .then(res => res.json())
+            .then(data => {
+                const pointlayer = new L7.PointLayer()
+                    .source(data,
+                        {
+                            parser: {
+                                type: 'json',
+                                x: 'lng',
+                                y: 'lat'
+                            }
+                        }
+                    )
+                    .shape('cylinder')
+                    .color('#FFFFFF')
+                    .size('', () => [ 0.1, 0.1, 18 ])
+                    .active(true);
+                scene.addLayer(pointlayer);
+            });
+
+        fetch(
+            'https://gw.alipayobjects.com/os/basement_prod/513add53-dcb2-4295-8860-9e7aa5236699.json'
+            // 'https://sh-conf.oss-cn-shanghai.aliyuncs.com/datav-coms-data/world2.json'
+        )
+            .then(res => res.json())
+            .then(data => {
+                const pointLayer = new L7.PointLayer({})
+                    .source(data)
+                    .size(2)
+                    .color('h8', [
+                        '#0A3663',
+                        '#1558AC',
+                        '#3771D9',
+                        '#4D89E5',
+                        '#64A5D3',
+                        '#72BED6',
+                        '#83CED6',
+                        '#A6E1E0',
+                        '#B8EFE2',
+                        '#D7F9F0'
+                    ])
+                    .style({
+                        opacity: 1
+                    });
+
+                scene.addLayer(pointLayer);
+            });
+
+        earthlayer.setEarthTime(4.0);
+    });
+
+</script>
+</body>
+</html>
