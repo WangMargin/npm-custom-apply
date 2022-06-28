@@ -1,0 +1,16 @@
+export const getters = {
+  lang: state => state.lang,
+  device: state => state.device,
+  // layout: state => state.layout,
+  layout: state => state.faculty_layout,
+  navTheme: state => state.navTheme,
+  contentWidth: state => state.contentWidth,
+  fixedHeader: state => state.fixedHeader,
+  fixedSidebar: state => state.fixedSidebar,
+  primaryColor: state => state.primaryColor,
+  colorWeak: state => state.colorWeak,
+  splitMenus: state => state.splitMenus,
+  transitionName: state => state.transitionName,
+  multiTab: state => state.multiTab,
+  multiTabFixed: state => state.multiTabFixed,
+};

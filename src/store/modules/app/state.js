@@ -1,0 +1,20 @@
+export const state = {
+  lang: 'zh-CN',
+  device: 'desktop',
+  // layout: 'side',
+  facultyLayout: 'top',
+  navTheme: 'light',
+  contentWidth: 'Fluid',
+  fixedHeader: false,
+  fixedSidebar: true,
+  menu: {
+    locale: false,
+  },
+  splitMenus: false,
+  title: 'SycamoreTemplate',
+  primaryColor: '#BB133E',
+  colorWeak: false,
+  transitionName: '',
+  multiTab: true,
+  multiTabFixed: false,
+};
