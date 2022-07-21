@@ -1,1 +1,1 @@
-# npm-custom-apply
+# 使用原始的js 开发地球数据展示
