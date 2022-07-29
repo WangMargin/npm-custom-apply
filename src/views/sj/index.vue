@@ -12,7 +12,7 @@
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
+            <a-form-item name="idNo" label="身份证号" :maxlength="18">
               <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
             </a-form-item>
           </a-col>
@@ -47,78 +47,108 @@
                 v-model:value="createForm.comeDate"
                 block
                 style="width: 100%"
-                :format="'YYYY-MM-DD'"
+                value-format="YYYY-MM-DD"
+                :inputReadOnly="true"
                 placeholder="请选择返程日期"
               />
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="comeWay" label="返程方式">
+              <a-input v-model:value="createForm.comeWay" placeholder="请填写返程方式"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="firstCheck" label="第一次核酸检测结果">
+              <a-select
+                v-model:value="createForm.firstCheck"
+                placeholder="请选择第一次核酸检测结果"
+                block
+                :options="pageData.firstCheck"
+              ></a-select>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="firstCheckDate" label="第一次核酸检测日期">
+              <a-date-picker
+                v-model:value="createForm.firstCheckDate"
+                block
+                style="width: 100%"
+                value-format="YYYY-MM-DD"
+                :inputReadOnly="true"
+                placeholder="请选择第一次核酸检测日期"
+              />
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="secondCheck" label="第二次核酸检测结果">
+              <a-select
+                v-model:value="createForm.secondCheck"
+                placeholder="请选择第二次核酸检测结果"
+                block
+                :options="pageData.firstCheck"
+              ></a-select>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="secondCheckDate" label="第二次核酸检测日期">
+              <a-date-picker
+                v-model:value="createForm.secondCheckDate"
+                block
+                style="width: 100%"
+                value-format="YYYY-MM-DD"
+                :inputReadOnly="true"
+                placeholder="请选择第二次核酸检测日期"
+              />
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="healthCode" label="健康码">
+              <a-select
+                v-model:value="createForm.healthCode"
+                placeholder="请选择您的健康码状态"
+                block
+                :options="pageData.healthCode"
+              ></a-select>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="carNumber" label="车牌号">
+              <a-input v-model:value="createForm.carNumber" placeholder="请填写车牌号"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :xs="24" :sm="24" :md="24" :lg="12">
-            <a-form-item name="idNo" label="身份证号">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+            <a-form-item name="vaccination" label="疫苗接种情况">
+              <a-select
+                v-model:value="createForm.vaccination"
+                placeholder="请选择第二次核酸检测结果"
+                block
+                :options="pageData.vaccination"
+              ></a-select>
             </a-form-item>
           </a-col>
         </a-row>
       </a-form>
-      <div style="text-align: center; padding: 30px 0">
-        <a-button @click="handleCancel">取消</a-button>
-        <a-button type="primary" @click="handleOK" class="mg-l10" :loading="state.loading">
-          确定
-        </a-button>
+      <div style="text-align: center">
+        <a-space align="center">
+          <a-popconfirm
+            title="您确定重置已填写信息？"
+            ok-text="确定"
+            cancel-text="取消"
+            @confirm="handleCancel"
+          >
+            <a-button size="large">重置</a-button>
+          </a-popconfirm>
+          <a-button
+            size="large"
+            type="primary"
+            @click="handleOK"
+            class="mg-l10"
+            :loading="state.loading"
+          >
+            提交
+          </a-button>
+        </a-space>
       </div>
     </a-card>
   </div>
@@ -127,6 +157,7 @@
 <script>
 import { reactive, ref, onMounted, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
+import { commonRule } from './js/rule';
 // import { message, Modal } from 'ant-design-vue';
 export default defineComponent({
   name: '编辑职务类型数据',
@@ -147,44 +178,24 @@ export default defineComponent({
         { label: '就医', value: 4 },
         { label: '其他', value: 5 },
       ],
+      firstCheck: [
+        { label: '阴性', value: 0 },
+        { label: '阳性', value: 1 },
+      ],
+      healthCode: [
+        { label: '绿码', value: 1 },
+        { label: '黄码', value: 2 },
+        { label: '红码', value: 3 },
+      ],
+      vaccination: [
+        { label: '一针', value: 1 },
+        { label: '两针', value: 2 },
+        { label: '三针', value: 3 },
+      ],
     });
     const createRef = ref();
 
-    const createRule = reactive({
-      category: [
-        {
-          required: true,
-          message: '请填写职务类型名称',
-          type: 'string',
-          trigger: 'blur',
-        },
-      ],
-      standard: [
-        {
-          required: true,
-          message: '请填写时长标准',
-          type: 'number',
-          min: 0,
-          trigger: 'blur',
-        },
-      ],
-      desc: [
-        {
-          required: true,
-          message: '请填写职务类型描述',
-          type: 'string',
-          trigger: 'blur',
-        },
-      ],
-      comment: [
-        {
-          required: false,
-          message: '请填写备注',
-          type: 'string',
-          trigger: 'blur',
-        },
-      ],
-    });
+    const createRule = reactive(commonRule);
     const createForm = reactive({
       name: '王宜涛',
       idNo: '13042719900325691X',
@@ -201,9 +212,9 @@ export default defineComponent({
       comeDate: undefined,
       comeWay: '电动自行车',
       firstCheck: 0,
-      firstCheckDate: '2022-07-26 12:03:12',
+      firstCheckDate: undefined,
       secondCheck: 0,
-      secondCheckDate: '2022-07-26 12:03:12',
+      secondCheckDate: undefined,
       healthCode: 1,
       carNumber: 'DS7A07',
       vaccination: 2,
@@ -215,6 +226,7 @@ export default defineComponent({
       createRef.value.resetFields();
     };
     const handleOK = () => {
+      console.log(createForm);
       createRef.value
         .validate()
         .then(res => {

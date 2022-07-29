@@ -10,6 +10,11 @@ const routes = [
     component: Home,
   },
   {
+    path: '/backend',
+    name: 'backend',
+    component: () => import('@/views/backend/index.vue'),
+  },
+  {
     path: '/suojing',
     name: 'suojing',
     component: suojing,
