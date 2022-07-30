@@ -3,6 +3,7 @@
     <a-row style="width: 100%">
       <a-col :span="24">
         <a-card style="border: none">
+          <router-link to="/suojing">===</router-link>
           <a-button @click="handleAuthorization" size="default" type="primary" v-if="false">
             授权
           </a-button>

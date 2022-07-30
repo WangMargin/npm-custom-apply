@@ -45,7 +45,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  // base: '/ppp/',
+  history: createWebHistory('/ppp/'),
   routes,
 });
 
