@@ -15,8 +15,8 @@ export const commonRule = {
       trigger: 'blur',
       validator: (rule, value) => {
         console.log(value);
-        if (value.length < 18) {
-          return Promise.reject('Age must be greater than 18');
+        if (value.length !== 18) {
+          return Promise.reject('身份证号填写错误');
         } else {
           return Promise.resolve();
         }
@@ -29,6 +29,14 @@ export const commonRule = {
       message: '请填写手机号',
       type: 'string',
       trigger: 'blur',
+      validator: (rule, value) => {
+        console.log(value);
+        if (value.length !== 11) {
+          return Promise.reject('身份证号填写错误');
+        } else {
+          return Promise.resolve();
+        }
+      },
     },
   ],
   temperature: [
@@ -108,6 +116,34 @@ export const commonRule = {
       required: true,
       message: '请选择您的疫苗接种情况',
       type: 'number',
+      trigger: 'change',
+    },
+  ],
+  sourceProvinceName: [
+    {
+      required: true,
+      message: '请填写所在地省份',
+      trigger: 'change',
+    },
+  ],
+  sourceCityName: [
+    {
+      required: true,
+      message: '请填写所在市',
+      trigger: 'change',
+    },
+  ],
+  sourceAreaName: [
+    {
+      required: true,
+      message: '请填写所在地县区',
+      trigger: 'change',
+    },
+  ],
+  sourceDetail: [
+    {
+      required: true,
+      message: '请填写所在地详细地址',
       trigger: 'change',
     },
   ],

@@ -4,7 +4,7 @@
       <a-divider>
         报备数据统计
       </a-divider>
-      <a-form ref="createRef" :rules="createRule" :model="createForm">
+      <a-form ref="createRef" :model="createForm">
         <a-row :gutter="[15, 15]">
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="name" label="姓名">
@@ -29,33 +29,20 @@
           <a-divider></a-divider>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="sourceProvinceName" label="省">
-              <a-select
+              <a-input
                 v-model:value="createForm.sourceProvinceName"
                 placeholder="请选择省"
-                @change="handleOptions"
-                :options="state.location_options_1"
-              ></a-select>
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="sourceCityName" label="市">
-              <a-select
-                v-model:value="createForm.sourceCityName"
-                placeholder="请选择市"
-                @change="handleOptions2"
-                :disabled="!state.location_options_2"
-                :options="state.location_options_2"
-              ></a-select>
+              <a-input v-model:value="createForm.sourceCityName" placeholder="请选择市"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="sourceAreaName" label="县区">
-              <a-select
-                v-model:value="createForm.sourceAreaName"
-                placeholder="请选择县区"
-                :disabled="!state.location_options_3"
-                :options="state.location_options_3"
-              ></a-select>
+              <a-input v-model:value="createForm.sourceAreaName" placeholder="请选择县区"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
@@ -167,7 +154,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <div style="text-align: center">
+      <div style="text-align: center" v-if="false">
         <a-space align="center">
           <a-popconfirm
             title="您确定重置已填写信息？"
@@ -190,24 +177,20 @@
         </a-space>
       </div>
     </a-card>
-    <a-modal :visible="state.visible" :footer="null" centered>
-      <a-result status="success" title="提交成功"></a-result>
-    </a-modal>
   </div>
 </template>
 
 <script>
 import { reactive, ref, onMounted, defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
-import { commonRule } from './js/rule';
-import { getDistrict, postAdd } from '@/api/suojing';
-import moment from 'moment';
+import { useRoute } from 'vue-router';
+import { getDetail } from '@/api/suojing';
+// import moment from 'moment';
 export default defineComponent({
-  name: '编辑职务类型数据',
+  name: '展示填写数据详情',
   components: {},
   props: {},
   setup() {
-    const router = useRouter();
+    const route = useRoute();
     const state = reactive({
       visible: false,
       location_options_1: undefined,
@@ -242,7 +225,6 @@ export default defineComponent({
     });
     const createRef = ref();
 
-    const createRule = reactive(commonRule);
     const createForm = reactive({
       sourceAddress: undefined,
       //
@@ -269,112 +251,23 @@ export default defineComponent({
       vaccination: undefined,
     });
 
-    /**
-     * 获取省市区三级联动数据
-     */
-    const getDistrictFun = data => {
-      getDistrict(data)
+    onMounted(() => {
+      const data = {
+        id: route.query.id,
+      };
+      getDetail(data)
         .then(res => {
-          console.log(res, data);
-          if (res.resultCode === '200') {
-            if (data.type === 1) {
-              //  省份
-              state.location_options_1 = res.data.map(item => {
-                return Object.assign(item, {
-                  label: item.name,
-                  value: item.name,
-                });
-              });
-            }
-            if (data.type === 2) {
-              //  市区
-              state.location_options_2 = res.data.map(item => {
-                return Object.assign(item, {
-                  label: item.name,
-                  value: item.name,
-                });
-              });
-            }
-            if (data.type === 3) {
-              //  县区
-              state.location_options_3 = res.data.map(item => {
-                return Object.assign(item, {
-                  label: item.name,
-                  value: item.name,
-                });
-              });
-            }
-          }
+          console.log(res);
+          Object.assign(createForm, res);
         })
         .catch(err => {
           console.error(err);
         });
-    };
-    onMounted(() => {
-      getDistrictFun({ type: 1 });
     });
 
-    const handleCancel = () => {
-      // console.log('====');
-      createRef.value.resetFields();
-    };
-    const handleOK = () => {
-      console.log(createForm);
-      createRef.value
-        .validate()
-        .then(res => {
-          const data = Object.assign(createForm, res);
-          data.firstCheckDate = moment(data.firstCheckDate).format('YYYY-MM-DD HH:mm:ss');
-          data.secondCheckDate = moment(data.secondCheckDate).format('YYYY-MM-DD HH:mm:ss');
-          data.comeDate = moment(data.comeDate).format('YYYY-MM-DD HH:mm:ss');
-          postAdd(data)
-            .then(r => {
-              if (r.resultCode === '200') {
-                state.visible = true;
-              }
-            })
-            .catch(err => {
-              console.error(err);
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    };
-
-    // 选择省
-    const handleOptions = (val, s) => {
-      state.location_options_2 = undefined;
-      state.location_options_3 = undefined;
-      createForm.sourceCityName = undefined;
-      createForm.sourceAreaName = undefined;
-      const data = {
-        type: 2,
-        parentCode: s.code,
-      };
-      getDistrictFun(data);
-    };
-    // 选择市区
-    const handleOptions2 = (val, s) => {
-      state.location_options_3 = undefined;
-      createForm.sourceAreaName = undefined;
-      const data = {
-        type: 3,
-        parentCode: s.code,
-      };
-      getDistrictFun(data);
-    };
-
     return {
-      handleOptions,
-      handleOptions2,
-      getDistrictFun,
-      handleOK,
-      handleCancel,
       pageData,
-      router,
       state,
-      createRule,
       createForm,
       createRef,
     };

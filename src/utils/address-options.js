@@ -41,7 +41,7 @@ Object.keys(provinceCities).forEach(province => {
     children: cities,
   });
 });
-
+export const LOCATION_OPTIONS = provinceAndCityOptions.concat(l);
 provinceAndCityOptions.concat(l);
 
 export default provinceAndCityOptions;

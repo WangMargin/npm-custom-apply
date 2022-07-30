@@ -1,6 +1,11 @@
 <template>
   <a-config-provider :locale="zhCN">
     <router-view></router-view>
+    <div
+      style="margin: 150px 0 0px 0;padding: 20px 0;color:#cccccc;background: #fafafa;text-align: center"
+    >
+      返乡报备
+    </div>
   </a-config-provider>
 </template>
 <script>
