@@ -211,6 +211,7 @@
         </a-space>
       </div>
     </a-card>
+    <session-module></session-module>
   </div>
 </template>
 
@@ -218,10 +219,13 @@
 import { reactive, ref, onMounted, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { getDetail } from '@/api/suojing';
+import SessionModule from '@/views/backend/modules/session';
 // import moment from 'moment';
 export default defineComponent({
   name: '展示填写数据详情',
-  components: {},
+  components: {
+    SessionModule,
+  },
   props: {},
   setup() {
     const route = useRoute();

@@ -46,6 +46,11 @@
           <template v-if="column.dataIndex === 'action'">
             <a-button type="link" @click="handleDetail(record)">详情</a-button>
           </template>
+          <template v-if="column.dataIndex === 'healthCode'">
+            <a-badge v-if="record.healthCode === 1" status="success" text="绿码" />
+            <a-badge v-if="record.healthCode === 2" status="warning" text="黄码" />
+            <a-badge v-if="record.healthCode === 3" status="error" text="红码" />
+          </template>
         </template>
       </a-table>
     </a-card>
