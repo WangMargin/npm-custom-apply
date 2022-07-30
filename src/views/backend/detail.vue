@@ -1,29 +1,39 @@
 <template>
   <div class="suojing-box">
     <a-card>
-      <a-divider>
-        报备数据统计
-      </a-divider>
+      <a-divider>{{ createForm.name || '' }} 报备详情</a-divider>
       <a-form ref="createRef" :model="createForm">
         <a-row :gutter="[15, 15]">
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="name" label="姓名">
-              <a-input v-model:value="createForm.name" placeholder="请填写姓名"></a-input>
+              <a-input readonly v-model:value="createForm.name" placeholder="请填写姓名"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="idNo" label="身份证号" :maxlength="18">
-              <a-input v-model:value="createForm.idNo" placeholder="请填写身份证号"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.idNo"
+                placeholder="请填写身份证号"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="phone" label="手机号">
-              <a-input v-model:value="createForm.phone" placeholder="请填写手机号"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.phone"
+                placeholder="请填写手机号"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="temperature" label="体温">
-              <a-input v-model:value="createForm.temperature" placeholder="请填写体温"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.temperature"
+                placeholder="请填写体温"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-divider></a-divider>
@@ -32,17 +42,26 @@
               <a-input
                 v-model:value="createForm.sourceProvinceName"
                 placeholder="请选择省"
+                readonly
               ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="sourceCityName" label="市">
-              <a-input v-model:value="createForm.sourceCityName" placeholder="请选择市"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.sourceCityName"
+                placeholder="请选择市"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="sourceAreaName" label="县区">
-              <a-input v-model:value="createForm.sourceAreaName" placeholder="请选择县区"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.sourceAreaName"
+                placeholder="请选择县区"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
@@ -50,6 +69,7 @@
               <a-input
                 v-model:value="createForm.sourceDetail"
                 placeholder="请填写详细地址"
+                readonly
               ></a-input>
             </a-form-item>
           </a-col>
@@ -59,6 +79,7 @@
                 v-model:value="createForm.externalCauses"
                 placeholder="请填写在外事由"
                 block
+                readonly
                 :options="pageData.externalCauses"
               ></a-select>
             </a-form-item>
@@ -68,6 +89,7 @@
               <a-date-picker
                 v-model:value="createForm.comeDate"
                 block
+                readonly
                 style="width: 100%"
                 value-format="YYYY-MM-DD"
                 :inputReadOnly="true"
@@ -78,12 +100,20 @@
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="comeWay" label="返程方式">
               <template #extra>示例：高铁-G999</template>
-              <a-input v-model:value="createForm.comeWay" placeholder="请填写返程方式"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.comeWay"
+                placeholder="请填写返程方式"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="carNumber" label="车牌号">
-              <a-input v-model:value="createForm.carNumber" placeholder="请填写车牌号"></a-input>
+              <a-input
+                readonly
+                v-model:value="createForm.carNumber"
+                placeholder="请填写车牌号"
+              ></a-input>
             </a-form-item>
           </a-col>
           <a-divider></a-divider>
@@ -94,6 +124,7 @@
                 v-model:value="createForm.firstCheck"
                 placeholder="请选择第一次核酸检测结果"
                 block
+                readonly
                 :options="pageData.firstCheck"
               ></a-select>
             </a-form-item>
@@ -116,6 +147,7 @@
                 v-model:value="createForm.secondCheck"
                 placeholder="请选择第二次核酸检测结果"
                 block
+                readonly
                 :options="pageData.firstCheck"
               ></a-select>
             </a-form-item>
@@ -125,6 +157,7 @@
               <a-date-picker
                 v-model:value="createForm.secondCheckDate"
                 block
+                readonly
                 style="width: 100%"
                 value-format="YYYY-MM-DD"
                 :inputReadOnly="true"
@@ -138,6 +171,7 @@
                 v-model:value="createForm.healthCode"
                 placeholder="请选择您的健康码状态"
                 block
+                readonly
                 :options="pageData.healthCode"
               ></a-select>
             </a-form-item>
