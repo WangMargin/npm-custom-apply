@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Canvas2 from '@/views/html/2canvas.vue';
 import suojing from '@/views/sj/index.vue';
@@ -46,7 +46,7 @@ const routes = [
 
 const router = createRouter({
   // base: '/ppp/',
-  history: createWebHistory('/ppp/'),
+  history: createWebHashHistory('/ppp/'),
   routes,
 });
 
