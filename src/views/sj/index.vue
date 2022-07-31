@@ -2,7 +2,7 @@
   <div class="suojing-box">
     <a-card>
       <a-divider>
-        报备数据统计
+        毛演堡镇人员返乡信息
       </a-divider>
       <a-form ref="createRef" :rules="createRule" :model="createForm">
         <a-row :gutter="[15, 8]">
@@ -62,7 +62,7 @@
             <a-form-item name="sourceDetail" label="详细地址">
               <a-input
                 v-model:value="createForm.sourceDetail"
-                placeholder="请填写详细地址"
+                placeholder="请填写返程地区的住址"
               ></a-input>
             </a-form-item>
           </a-col>
