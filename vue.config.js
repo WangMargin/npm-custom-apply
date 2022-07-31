@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/ppp/',
+  publicPath: '/submit/',
   pages: {
     app: {
       // page 的入口
@@ -20,13 +20,6 @@ module.exports = {
           '^/api': '/'
         }
       },
-      // '/api': {
-      //   target: 'http://suojing.wangyc.top:3210/',  //这里后台的地址模拟的;应该填写你们真实的后台接口
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/api': ''
-      //   }
-      // },
     },
   },
 };

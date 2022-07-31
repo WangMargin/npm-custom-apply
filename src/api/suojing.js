@@ -1,10 +1,10 @@
 import request from '@/utils/request';
 
 const api = {
-  pagelist: '/journeyRecord/pageList',
-  district: '/select/district',
-  add: '/journeyRecord/add',
-  detail: '/journeyRecord/detail',
+  pagelist: '/api-record/journeyRecord/pageList',
+  district: '/api-record/select/district',
+  add: '/api-record/journeyRecord/add',
+  detail: '/api-record/journeyRecord/detail',
 };
 export async function postPageList(params) {
   return request({

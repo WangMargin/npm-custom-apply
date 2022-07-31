@@ -5,7 +5,7 @@
         报备数据统计
       </a-divider>
       <a-form ref="createRef" :rules="createRule" :model="createForm">
-        <a-row :gutter="[15, 15]">
+        <a-row :gutter="[15, 8]">
           <a-col :xs="24" :sm="24" :md="24" :lg="12">
             <a-form-item name="name" label="姓名">
               <a-input v-model:value="createForm.name" placeholder="请填写姓名"></a-input>
@@ -167,7 +167,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <div style="text-align: center">
+      <div style="text-align: center;margin-top: 20px;">
         <a-space align="center">
           <a-popconfirm
             title="您确定重置已填写信息？"
@@ -386,5 +386,11 @@ export default defineComponent({
 .suojing-box {
   max-width: 1000px;
   margin: 20px auto;
+}
+.suojing-box .ant-form-item {
+  margin-bottom: 0 !important;
+}
+.suojing-box .ant-divider-horizontal {
+  margin: 0 !important;
 }
 </style>
