@@ -1,26 +1,5 @@
-# v-component
+# 简易返乡登记
 
-# 开发 html 2 canvas  自定义生成图片的功能
-
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 前端用户填写表单
+## 后台可以查看用户填写信息列表
+## 登录使用session，每次打开都需要重新登录
