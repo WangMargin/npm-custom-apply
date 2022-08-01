@@ -1,0 +1,57 @@
+body,
+html,
+div,
+p,
+ul,
+ol,
+li,
+span,
+b,
+table,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+iframe {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #424447;
+}
+.font-12 {
+  font-size: 12px;
+}
+.font-13 {
+  font-size: 13px;
+}
+.font-30 {
+  font-size: 30px;
+}
+.color-fff {
+  color: #ffffff;
+}
+.school-box .header-box {
+  color: #ffffff;
+}
+.content-box {
+  display: flex;
+}
+.content-left {
+  color: #ffffff;
+  width: 300px;
+  height: 500px;
+}
+.content-center {
+  color: #ffffff;
+  width: 300px;
+  height: 500px;
+}
+.content-right {
+  color: #ffffff;
+  width: 300px;
+  height: 500px;
+}
+/*# sourceMappingURL=common.css.map */
