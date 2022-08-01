@@ -1,6 +1,7 @@
 body,html,div,p,ul,ol,li,span,b,table,h1,h2,h3,h4,h5,h6,iframe {
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 body {
   background: #424447;
@@ -11,6 +12,9 @@ body {
 .font-13 {
   font-size: 13px;
 }
+.font-16 {
+  font-size: 16px;
+}
 .font-30 {
   font-size: 30px;
 }
@@ -19,9 +23,12 @@ body {
 }
 
 .school-box {
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
   //transform: scale(0.6); // 比例缩放
-  
   .header-box {
+    height: 72px;
     .color-fff;
   }
 }
@@ -34,6 +41,11 @@ body {
   .color-fff;
   width: 300px;
   height: 500px;
+  .box1 {
+    .title {
+      height: 28px;
+    }
+  }
 }
 
 .content-center {
