@@ -5,11 +5,50 @@
     <title>企业微信分享</title>
     <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <!--    <script src="./js/sha1.js"></script>-->
+    <style>
+        .loading {
+            width: 150px;
+            height: 150px;
+            left: 50%;
+            top:30%;
+            margin-left: -75px;
+            position: fixed;
+            display: flex;
+            border-radius: 50%;
+            overflow: hidden;
+            -webkit-mask: radial-gradient(transparent 55%, #000 55%);
+            animation: rotate 1s linear infinite;
+        }
+        .left {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(rgb(2, 211, 248), rgba(2, 211, 248, .5))
+        }
+        .right {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(2, 211, 248, .5));
+        }
+        @keyframes rotate {
+            0% {
+                transform: rotateZ(0);
+            }
+            100% {
+                transform: rotateZ(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div>
         <button class="btn btn_primary" data-type="shareWechatMessage">点我分享到微信去</button>
+    </div>
+    <div class="share-loading-box">
+        <div class="loading">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
     </div>
     <div>
         <h1>-----log------</h1>
@@ -37,6 +76,22 @@
         const token = localStorage.getItem('Access-Token')
         return (token || false)
     }
+
+    /**
+     * 将 url 中的 token 或者 ls 中的 token 进行jwt的解析，获取 uid
+     */
+    const formatToken = function (tk) {
+        //data.data.normal_login_token为发送Ajax获取到的token信息
+        let strings = tk.split(".");//通过split()方法将token转为字符串数组
+        //取strings[1]数组中的第二个字符进行解析
+        let userinfo = JSON.parse(decodeURIComponent(escape(window.atob(strings[1].replace(/-/g, "+").replace(/_/g, "/")))));
+        //然后可以拿到解析后的数据，可以console.log()打印下，
+        console.log(userinfo,'【 解析URL中 或 ls中的 token 】userinfo');
+        //然后赋值自己需要的数据
+        // var accountId = userinfo.accountId;
+        return userinfo;
+    }
+
     const DEVICE_TYPE = {
         DESKTOP: 'desktop',
         TABLET: 'tablet',
@@ -97,25 +152,60 @@
     console.log(definition(navigator.userAgent))
     log_box.append(`${JSON.stringify(definition(navigator.userAgent))}\<br>`)
 
-    // 判断当前 页面打开设备 是否为企业微信
-    if ((definition(navigator.userAgent) !== PROJECT_SYSTEM.CorpWeChatMobile.system) || (definition(navigator.userAgent) !== PROJECT_SYSTEM.CorpWeChatDesktop.system)) {
-        alert('请使用企业微信打开！')
-        return false;
-    } else {
-        // 是否已经登录 存在token
-        if (!getRuntimeEnv()) {
-            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx41f4e6c3cdaa38e9&redirect_uri=https%3a%2f%2fapi.test.pbcsf.net%2fapi%2fv1%2foauth%2fcorp-wechat%2fcallback&response_type=code&scope=snsapi_base&state=L2luZGV4#wechat_redirect';
-            log_box.append(`尚未登录。`)
+    /**
+     * 通过 url 判断当前开发环境
+     */
+    const judgeEnv = function () {
+        const dev = new RegExp(/article-dev/);
+        if (dev.test(window.location.host)) {
+            // development
+            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx41f4e6c3cdaa38e9&redirect_uri=https%3a%2f%2fgateway.pbcsf.net%2foauth%2fcorp-wechat%2fcms%2fcallback&response_type=code&scope=snsapi_base&state=L2luZGV4#wechat_redirect';
         } else {
-            console.log('=====获取当前用户id')
-            log_box.append(`====> 已经存在token。`)
-            //  已经登录，存在token，查看 当前url中是否存在 重定向的链接地址
-            const formatUrl = getFormatUrl(window.location.href);
-            //  重定向至 指定链接地址
-            if (formatUrl.redirect) {
-                window.location.href = formatUrl.redirect;
-            } else {
+            // production
+            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx41f4e6c3cdaa38e9&redirect_uri=https%3a%2f%2fgateway.pbcsf.net%2foauth%2fcorp-wechat%2fcms%2fcallback&response_type=code&scope=snsapi_base&state=L2luZGV4#wechat_redirect';
+        }
+        log_box.append(`尚未登录。`)
+    }
 
+    // 判断当前 页面打开设备 是否为企业微信
+    if ((definition(navigator.userAgent) !== PROJECT_SYSTEM.CorpWeChatMobile.system)) {
+        alert('请在手机企业微信中打开该链接！')
+    } else {
+        // 是否已经登录
+        // 尚未授权登录
+        if (!getRuntimeEnv()) {
+            log_box.append(`====> 【 判断当前环境 】尚未授权登录。`)
+            // 判断当前的环境
+            judgeEnv();
+        } else {
+            // 已经授权登录
+            log_box.append(`====> 【 已授权登录 】已经存在token。`)
+            //  解析当前 回调回来的 url 参数
+            const formatUrl = getFormatUrl(window.location.href);
+            log_box.append(`====> 【 解析当前url参数 】`, JSON.stringify(formatUrl))
+            // 先查看 url || ls 中是否存在 token
+            const tk = formatUrl['access_token'] || localStorage.getItem('access_token') || undefined;
+            //  过期时间比对 如已过期则重新授权
+            const checkDate = formatUrl['expires_in'];
+            const nowDate = new Date().getTime();
+            // uid
+            let uid = undefined;
+            if (nowDate > checkDate || !tk) {
+                //  token 已过期，重新授权
+                localStorage.removeItem('access_token')
+                judgeEnv();
+            } else {
+                localStorage.setItem('access_token', tk);
+                const userInfoData = formatToken(tk);
+                log_box.append(`====> 【 解析token，获取uid 】`, userInfoData)
+                uid = userInfoData.uid || undefined;
+            }
+            log_box.append(`====> 【 等待拼接待信息 】`)
+            const FormatString = 'uid=' + uid + '&wangyc=其他测试信息'
+
+            //  重定向,返回文章分享链接地址
+            if (formatUrl.redirect) {
+                window.location.href = formatUrl.redirect + '?' + FormatString;
             }
         }
     }
