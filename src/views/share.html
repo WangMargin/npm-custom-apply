@@ -50,9 +50,9 @@
                 color: #333333;
                 display: none;
             }
-        .body-box p {
+        .body-box {
             padding: 100px 0;
-            font-size: 16px;
+            font-size: 3em;
         }
         .debug-button {
             width: 100%;
@@ -272,13 +272,23 @@
         }
     }
 
+
+    /**
+     * @returns {boolean}
+     */
+    function isMobileWXWork () {
+        let ua = navigator.userAgent.toLowerCase();
+        return ua.indexOf('mobile') !== -1 && ua.indexOf('wxwork') !== -1;
+    }
+
     $(document).ready(function(){
         // 判断当前 页面打开设备 是否为企业微信
 
         log_box.append(`====> 【 definition(navigator.userAgent) 】=====>。`, definition(navigator.userAgent))
-        const _system_ = definition(navigator.userAgent);
+        // const _system_ = definition(navigator.userAgent);
         // 企业微信环境
-        if ((_system_.system !== PROJECT_SYSTEM.CorpWeChatMobile.system) || (_system_.system === PROJECT_SYSTEM.CorpWeChatDesktop.system)) {
+        if (isMobileWXWork()) {
+        // if ((_system_.system === PROJECT_SYSTEM.CorpWeChatMobile.system)) {
             //  解析当前 回调回来的 url 参数
             const formatUrl = getFormatUrl(window.location.href);
             log_box.append(`====> 【 解析url 】`, JSON.stringify(formatUrl));
