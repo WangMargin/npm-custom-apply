@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>企业微信分享</title>
     <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <!--    <script src="./js/sha1.js"></script>-->
     <style>
         .loading {
@@ -37,10 +38,29 @@
                 transform: rotateZ(360deg);
             }
         }
+            .body-box {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                height: 100%;
+                background: #ffffff;
+                z-index: 999;
+                top: 0;
+                text-align: center;
+                color: #333333;
+                display: none;
+            }
+        .body-box p {
+            padding: 100px 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
+    <div class="body-box">
+        <p>请在手机企业微信中打开该链接</p>
 
+    </div>
     <div>
         <button class="btn btn_primary" data-type="shareWechatMessage">点我分享到微信去</button>
     </div>
@@ -73,6 +93,7 @@
      * 获取本地存储中的 token 值
      */
     const getRuntimeEnv = function() {
+        localStorage.setItem('Access-Token', 'wangyc1231312')
         const token = localStorage.getItem('Access-Token')
         return (token || false)
     }
@@ -156,6 +177,7 @@
      * 通过 url 判断当前开发环境
      */
     const judgeEnv = function () {
+        return false;
         const dev = new RegExp(/article-dev/);
         if (dev.test(window.location.host)) {
             // development
@@ -168,10 +190,11 @@
     }
 
     // 判断当前 页面打开设备 是否为企业微信
-    if ((definition(navigator.userAgent) !== PROJECT_SYSTEM.CorpWeChatMobile.system)) {
-        alert('请在手机企业微信中打开该链接！')
+    if ((definition(navigator.userAgent) === PROJECT_SYSTEM.CorpWeChatMobile.system) || (definition(navigator.userAgent) === PROJECT_SYSTEM.CorpWeChatDesktop.system)) {
+        $('.body-box').show();
     } else {
         // 是否已经登录
+        log_box.append(`====> 【 查看token是否已存在 】`)
         // 尚未授权登录
         if (!getRuntimeEnv()) {
             log_box.append(`====> 【 判断当前环境 】尚未授权登录。`)
@@ -197,12 +220,12 @@
             } else {
                 localStorage.setItem('access_token', tk);
                 const userInfoData = formatToken(tk);
-                log_box.append(`====> 【 解析token，获取uid 】`, userInfoData)
+                log_box.append(`====> 【 解析token，获取uid 】`, JSON.stringify(userInfoData))
                 uid = userInfoData.uid || undefined;
             }
-            log_box.append(`====> 【 等待拼接待信息 】`)
-            const FormatString = 'uid=' + uid + '&wangyc=其他测试信息'
-
+            log_box.append(`====> 【 等待拼接待信息 】`);
+            const FormatString = 'uid=' + uid + '&wangyc=其他测试信息';
+            log_box.append(`====> 【 已生成拼接信息 】`, JSON.stringify(FormatString));
             //  重定向,返回文章分享链接地址
             if (formatUrl.redirect) {
                 window.location.href = formatUrl.redirect + '?' + FormatString;
