@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>企业微信分享</title>
+<!--    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!--    <script src="./js/sha1.js"></script>-->
+    <style>
+        .loading {
+            width: 150px;
+            height: 150px;
+            left: 50%;
+            top:30%;
+            margin-left: -75px;
+            position: fixed;
+            display: flex;
+            border-radius: 50%;
+            overflow: hidden;
+            -webkit-mask: radial-gradient(transparent 55%, #000 55%);
+            animation: rotate 1s linear infinite;
+        }
+        .left {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(rgb(2, 211, 248), rgba(2, 211, 248, .5))
+        }
+        .right {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0), rgba(2, 211, 248, .5));
+        }
+        @keyframes rotate {
+            0% {
+                transform: rotateZ(0);
+            }
+            100% {
+                transform: rotateZ(360deg);
+            }
+        }
+            .body-box {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                height: 100%;
+                background: #ffffff;
+                z-index: 999;
+                top: 0;
+                text-align: center;
+                color: #333333;
+                display: none;
+            }
+        .body-box p {
+            padding: 100px 0;
+            font-size: 16px;
+        }
+        .debug-button {
+            width: 100%;
+            padding: 20px 0;
+            background: #bb133e;
+            color: #ffffff;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-box">
+        <p>请在手机企业微信中打开该链接</p>
+    </div>
+    <div style="opacity: 0;">
+        <button class="btn btn_primary debug-button" data-type="shareWechatMessage">点我分享到微信去</button>
+        <button class="debug-button" id="clearToken">清除 Access-Token ls</button>
+        <button class="debug-button" id="clearAll">清除全部缓存</button>
+    </div>
+    <div class="share-loading-box">
+        <div class="loading">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+    </div>
+    <div style="opacity: 0;">
+        <h1>-----log------</h1>
+        <div class="log-box"></div>
+    </div>
+<script>
+
+    /**
+     *  清除所有缓存
+     */
+    function clearLS () {
+        $('#clearToken').on('click', function () {
+            localStorage.removeItem('Access-Token');
+        })
+        $('#clearAll').on('click', function () {
+            localStorage.clear()
+        })
+    }
+
+    /**
+     * 获取 url 中传递过来的所有参数
+     */
+    const getFormatUrl = function(url) {
+      let queryString = url.slice(url.indexOf('?')+1)
+      let tempArr = queryString.split('&')
+      let obj = {}
+      tempArr.forEach(item => {
+        let arr = item.split('=')
+        obj[arr[0]] = arr[1]
+      });
+      return obj
+    }
+
+    function getQueryStr (name) {
+        let result = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+        if (result == null || result.length < 1) {
+            return "";
+        }
+        return result[1];
+    }
+
+    /**
+     * 获取本地存储中的 token 值
+     */
+    const getRuntimeEnv = function() {
+        const token = localStorage.getItem('access-token')
+        return (token || false)
+    }
+
+    /**
+     * 将 url 中的 token 或者 ls 中的 token 进行jwt的解析，获取 uid
+     */
+    const formatToken = function (tk) {
+        log_box.append('【 解析token 】=====>', tk);
+        //data.data.normal_login_token为发送Ajax获取到的token信息
+        let strings = tk.split(".");//通过split()方法将token转为字符串数组
+        //取strings[1]数组中的第二个字符进行解析
+        let userinfo = JSON.parse(decodeURIComponent(escape(window.atob(strings[1].replace(/-/g, "+").replace(/_/g, "/")))));
+        //然后可以拿到解析后的数据，可以console.log()打印下，
+        log_box.append('【 解析URL中 或 ls中的 token 】====>>>', userinfo)
+        //然后赋值自己需要的数据
+        // var accountId = userinfo.accountId;
+        return userinfo;
+    }
+
+    const DEVICE_TYPE = {
+        DESKTOP: 'desktop',
+        TABLET: 'tablet',
+        MOBILE: 'mobile'
+    }
+    const PROJECT_SYSTEM = {
+        CorpWeChatMobile: {
+            system: 'CorpWeChatMobile',
+            value: '企业微信移动端'
+        },
+        CorpWeChatDesktop: {
+            system: 'CorpWeChatDesktop',
+            value: '企业微信桌面端'
+        },
+        Other: {
+            system: 'Other',
+            value: '其他'
+        },
+        WebDesktop: {
+            system: 'WebDesktop',
+            value: '浏览器桌面端'
+        }
+    }
+    let ACTIVE_SYSTEM = {
+        WebDesktop: {
+            system: false,
+            value: ''
+        }
+    }
+    /**
+     * 获取当前页面运行设备环境
+     * definition
+     */
+    function definition (type, _this) {
+        log_box.append('【 definition type 】=====>', type);
+        log_box.append('【 definition type 】=====>', JSON.stringify(navigator.userAgent));
+        const ua = navigator.userAgent.toLowerCase()
+        const mobile = (DEVICE_TYPE.MOBILE === type)
+        log_box.append('【 DEVICE_TYPE.MOBILE 】=====>', DEVICE_TYPE.MOBILE);
+        log_box.append('【 UA 】=====>', ua.includes('wxwork', 0));
+        let o = {
+            system: 'other',
+            value: '其他'
+        }
+        if (ua.includes('wxwork', 0)) {
+            o.system = 'wxwork'
+            if (mobile) {
+                o.value = PROJECT_SYSTEM.CorpWeChatMobile.value
+                o.system = PROJECT_SYSTEM.CorpWeChatMobile.system
+            } else {
+                o.value = PROJECT_SYSTEM.CorpWeChatDesktop.value
+                o.system = PROJECT_SYSTEM.CorpWeChatDesktop.system
+            }
+            ACTIVE_SYSTEM.system = true
+        } else {
+            if (mobile) {
+                o.value = PROJECT_SYSTEM.Other.value
+                o.system = PROJECT_SYSTEM.Other.system
+            } else {
+                o.value = PROJECT_SYSTEM.WebDesktop.value
+                o.system = PROJECT_SYSTEM.WebDesktop.system
+            }
+        }
+        o.mobile = (mobile || false)
+        log_box.append('【 o detail 】=====>', JSON.stringify(o));
+        return o
+    }
+
+    const log_box = document.getElementsByClassName('log-box')[0]
+    log_box.append('test======', definition(navigator.userAgent))
+    log_box.append(`${JSON.stringify(definition(navigator.userAgent))}`)
+
+    /**
+     * 通过 url 判断当前开发环境
+     */
+    const judgeEnv = function () {
+        let dev = new RegExp(/article-dev/);
+        if (dev.test(window.location.host)) {
+            // development
+            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx41f4e6c3cdaa38e9&redirect_uri=https%3A%2F%2Fapi.test.pbcsf.net%2Fapi%2Fv1%2Foauth%2Fcorp-wechat%2Fcms%2Fcallback&response_type=code&scope=snsapi_base&state=L2luZGV4#wechat_redirect';
+        } else {
+            // production
+            window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx41f4e6c3cdaa38e9&redirect_uri=https%3A%2F%2Fgateway.pbcsf.net%2Fapi%2Fv1%2Foauth%2Fcorp-wechat%2Fcms%2Fcallback&response_type=code&scope=snsapi_base&state=L2luZGV4#wechat_redirect';
+        }
+        log_box.append(`尚未登录。`)
+    }
+
+    // 解析token 在文章url中拼接tid 和 teacher 信息
+    function formatTidTeacher () {
+        log_box.append(`====> 【 解析token 在文章url中拼接tid 和 teacher 信息 】`)
+        const formatUrl = getFormatUrl(window.location.href);
+        log_box.append(`====> 【 格式化后的url参数 】`, JSON.stringify(formatUrl))
+        if (getQueryStr('access_token')) {
+            localStorage.setItem('access_token', getQueryStr('access_token'));
+        }
+        const userInfoData = formatToken(localStorage.getItem('access_token'));
+
+        log_box.append(`====> 【 解析token，获取uid 】`, JSON.stringify(userInfoData));
+        const FormatString = 'tid=' + userInfoData.sub + '&teacher=' + userInfoData.nickname;
+        log_box.append(`====> 【 已生成拼接信息 】`, JSON.stringify(FormatString));
+        //  重定向,返回文章分享链接地址
+        if (localStorage.getItem('cms_url')) {
+            const redirect = decodeURIComponent(localStorage.getItem('cms_url'))
+            const regHtml = new RegExp(/html\?/g)
+            if (regHtml.test(redirect)) {
+                window.location.href = (redirect + '&' + FormatString)
+            } else {
+                window.location.href = (redirect + '?' + FormatString)
+            }
+        }
+    }
+
+    // 判断是否存在token
+    function checkToken () {
+        log_box.append(`====> 【 查看token是否已存在 】`)
+        //  是否存在token
+        if (localStorage.getItem('access_token')) {
+            formatTidTeacher()
+        } else {
+            const formatUrl = getFormatUrl(window.location.href);
+            if (formatUrl['access_token']) {
+                formatTidTeacher()
+            } else {
+                //  企业微信授权
+                judgeEnv();
+            }
+        }
+    }
+
+    $(document).ready(function(){
+        // 判断当前 页面打开设备 是否为企业微信
+
+        log_box.append(`====> 【 definition(navigator.userAgent) 】=====>。`, definition(navigator.userAgent))
+        const _system_ = definition(navigator.userAgent);
+        // 企业微信环境
+        if ((_system_.system !== PROJECT_SYSTEM.CorpWeChatMobile.system) || (_system_.system === PROJECT_SYSTEM.CorpWeChatDesktop.system)) {
+            //  解析当前 回调回来的 url 参数
+            const formatUrl = getFormatUrl(window.location.href);
+            log_box.append(`====> 【 解析url 】`, JSON.stringify(formatUrl));
+            if (getQueryStr('url')) {
+                localStorage.setItem('cms_url', encodeURIComponent(getQueryStr('url')));
+                //  是否存在token
+                checkToken()
+            } else {
+                // 是否存在 文章链接
+                if (localStorage.getItem('cms_url')) {
+                    //  是否存在token
+                    checkToken()
+                } else {
+                    $('.body-box').show();
+                    $('.body-box').html('提示：请检查链接！');
+                }
+            }
+        } else {
+            $('.body-box').show();
+        }
+        let cms_n = 0;
+        $('.body-box').on('click', function () {
+            cms_n ++;
+            if (cms_n > 15) {
+                $('.body-box').hide();
+            }
+        });
+        clearLS();
+    });
+</script>
+
+</body>
+</html>
