@@ -1,12 +1,72 @@
-<div class="content-left">
+<div class="content-left-box">
   <div class="box1">
-    <div class="font-12 title">入库职工统计数</div>
+    <div class="font-12 title">学历学位项目</div>
     <div class="">
-      <b class="font-16">已完成实名登记</b>
-      <div class="font-12">Real name registration completed</div>
+      <b class="font-16">金融硕博/MBA/EMBA校友统计</b>
+      <div class="font-12">Total number with degree</div>
     </div>
     <div class="charts-box">
-
+      <div id="main" style="width:200px;height:200px"></div>
     </div>
   </div>
 </div>
+<script>
+  var chartDom = document.getElementById('main');
+  var myChart = echarts.init(chartDom);
+  var option;
+
+  option = {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      top: '0%',
+      left: 'center'
+    },
+    series: [
+      {
+        name: 'Access From',
+        type: 'pie',
+        radius: ['50%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '20',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          { value: 71.8, },
+          { value: 38.6, }
+        ]
+      }
+    ]
+  };
+  // option && myChart.setOption(option);
+  myChart.setOption(option, true);
+  myChart.dispatchAction({type: 'highlight',seriesIndex: 0, dataIndex: 0 });//设置默认选中高亮部分
+
+  myChart.on('mouseover',function(e){
+    if(e.dataIndex !== 1){
+      myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: 0 });
+    }
+  });
+
+  myChart.on('mouseout',function(e){
+    console.log(e, '=====out===')
+    index = e.dataIndex;
+    if(e.dataIndex !== 1){
+      myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: 0 });
+    } else {
+      myChart.dispatchAction({type: 'highlight',seriesIndex: e.dataIndex, dataIndex: e.dataIndex });
+    }
+  });
+</script>
