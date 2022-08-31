@@ -1,72 +1,311 @@
+
+<!--  学位学历项目 card  -->
 <div class="content-left-box">
   <div class="box1">
     <div class="font-12 title">学历学位项目</div>
-    <div class="">
-      <b class="font-16">金融硕博/MBA/EMBA校友统计</b>
-      <div class="font-12">Total number with degree</div>
+    <div class="sub-title">
+      <b class="font-13">金融硕博/MBA/EMBA校友统计</b>
+      <div class="font-12 mg-t5">Total number with degree</div>
     </div>
     <div class="charts-box">
-      <div id="main" style="width:200px;height:200px"></div>
+      <div class="flex">
+        <div id="main" style="width:50px;height:50px"></div>
+        <span><b>38.6 %</b></span>
+      </div>
+      <div class="mg-l50">
+        <span class="font-20">3,553 </span>
+        <span class="font-12">人</span>
+      </div>
     </div>
   </div>
 </div>
 <script>
-  var chartDom = document.getElementById('main');
-  var myChart = echarts.init(chartDom);
-  var option;
+  function recordFn() {
+    const chartDom = document.getElementById('main');
+    const myChart = echarts.init(chartDom);
+    let option;
 
-  option = {
-    tooltip: {
-      trigger: 'item'
-    },
-    legend: {
-      top: '0%',
-      left: 'center'
-    },
-    series: [
-      {
-        name: 'Access From',
-        type: 'pie',
-        radius: ['50%', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
+    option = {
+      tooltip: {
+        trigger: 'item',
+      },
+      color: [
+        '#224977',
+        '#93ebfd',
+      ],
+      legend: {
+        top: '0%',
+        left: '0%'
+      },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: false,
           label: {
-            show: true,
-            fontSize: '20',
-            fontWeight: 'bold'
-          }
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: false, // 不要问题提示
+              fontSize: '20',
+              // fontWeight: 'bold', // 粗体
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+            { value: 71.8, },
+            { value: 38.6, }
+          ]
+        }
+      ]
+    };
+    // option && myChart.setOption(option);
+    myChart.setOption(option, true);
+    // myChart.dispatchAction({type: 'highlight',seriesIndex: 0, dataIndex: 0 });//设置默认选中高亮部分
+    //
+    // myChart.on('mouseover',function(e){
+    //   if(e.dataIndex !== 1){
+    //     myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: 0 });
+    //   }
+    // });
+    //
+    // myChart.on('mouseout',function(e){
+    //   console.log(e, '=====out===')
+    //   index = e.dataIndex;
+    //   if(e.dataIndex !== 1){
+    //     myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: 0 });
+    //   } else {
+    //     myChart.dispatchAction({type: 'highlight',seriesIndex: e.dataIndex, dataIndex: e.dataIndex });
+    //   }
+    // });
+  };
+  recordFn();
+</script>
+
+<!--  非学位学历项目 card  -->
+<div class="content-left-box">
+  <div class="box1">
+    <div class="font-12 title">非学历学位项目</div>
+    <div class="sub-title">
+      <b class="font-13">金融培训项目校友统计</b>
+      <div class="font-12 mg-t5">Total number without degree</div>
+    </div>
+    <div class="charts-box">
+      <div class="flex">
+        <div id="main-2" style="width:50px;height:50px"></div>
+        <span><b>61.4 %</b></span>
+      </div>
+      <div class="mg-l50">
+        <span class="font-20">7,168 </span>
+        <span class="font-12">人</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function mainFn() {
+
+    const chartDom = document.getElementById('main-2');
+    const myChart = echarts.init(chartDom);
+    let mainOption;
+
+    mainOption = {
+      tooltip: {
+        trigger: 'item',
+      },
+      color: [
+        '#93ebfd',
+        '#224977',
+      ],
+      legend: {
+        top: '0%',
+        left: '0%'
+      },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: false, // 不要问题提示
+              fontSize: '20',
+              // fontWeight: 'bold', // 粗体
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+            { value: 71.8, },
+            { value: 38.6, }
+          ]
+        }
+      ]
+    };
+    myChart.setOption(mainOption, true);
+  };
+  mainFn();
+</script>
+
+
+<!--  教学项目统计 & 校友常住分布  -->
+<div class="content-left-teach-box">
+  <div class="echart-teach-box">
+    <div class="title">
+      <b class="font-13">按教学项目统计</b>
+      <div class="font-12 mg-t5">Trade Union statistics of projects</div>
+    </div>
+    <div id="bar-echart" style="width:80%;height:200px"></div>
+  </div>
+  <div class="echart-teach-box">
+    <div class="title">
+      <b class="font-13">校友常住地分布</b>
+      <div class="font-12 mg-t5">Trade Union statistics of residential address</div>
+    </div>
+    <div id="alumni-echart" style="width:80%;height:200px"></div>
+  </div>
+</div>
+<script>
+  function teachFn() {
+    const chartDomLeftBar = document.getElementById('bar-echart');
+    const myChart = echarts.init(chartDomLeftBar);
+
+    const data = [200, 500, 600, 700, 200, 12, 78];
+    const leftTeachoption = {
+      xAxis: {
+        max: 'dataMax',
+        show: false, // x轴上的指示数据隐藏
+      },
+      yAxis: {
+        type: 'category',
+        axisTick: {
+          inside: false
         },
-        labelLine: {
+        axisLine: {
           show: false
         },
-        data: [
-          { value: 71.8, },
-          { value: 38.6, }
-        ]
-      }
-    ]
+        axisLabel: {
+          show: true,
+          fontSize: 14,
+        },
+        data: ['金融硕士', '金融博士', '金融MBA', '金融EMBA', '金融GSFD', '高管教育', '在线教育'],
+        axisLabel : {
+          // formatter: '{value}',
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        inverse: true,
+        animationDuration: 300,
+        animationDurationUpdate: 300,
+        // max: 2 // only the largest 3 bars will be displayed
+      },
+      grid: {
+        left: '40%',
+        top: 0,
+        bottom: 0,
+        right: 0,
+      },
+      color: [
+        '#4ba3ef'
+      ],
+      series: [
+        {
+          realtimeSort: true, // 数据自动排序
+          //name: 'X',
+          type: 'bar',
+          data: data,
+          label: {
+            show: false, // 指示数据是否展示
+            position: 'right',
+            valueAnimation: true
+          }
+        }
+      ],
+      splitLine: {
+        show: false,
+      },
+      legend: {
+        show: false
+      },
+      animationDuration: 0,
+      animationDurationUpdate: 3000,
+      animationEasing: 'linear',
+      animationEasingUpdate: 'linear'
+    };
+    myChart.setOption(leftTeachoption, true);
   };
-  // option && myChart.setOption(option);
-  myChart.setOption(option, true);
-  myChart.dispatchAction({type: 'highlight',seriesIndex: 0, dataIndex: 0 });//设置默认选中高亮部分
-
-  myChart.on('mouseover',function(e){
-    if(e.dataIndex !== 1){
-      myChart.dispatchAction({type: 'downplay', seriesIndex: 0, dataIndex: 0 });
-    }
-  });
-
-  myChart.on('mouseout',function(e){
-    console.log(e, '=====out===')
-    index = e.dataIndex;
-    if(e.dataIndex !== 1){
-      myChart.dispatchAction({type: 'highlight', seriesIndex: 0, dataIndex: 0 });
-    } else {
-      myChart.dispatchAction({type: 'highlight',seriesIndex: e.dataIndex, dataIndex: e.dataIndex });
-    }
-  });
+  teachFn();
 </script>
+
+<script>
+  function alumniFn() {
+    const chartDomLeftAlumni = document.getElementById('alumni-echart');
+    const myChart = echarts.init(chartDomLeftAlumni);
+
+    const data = [200, 500, 600, 700, 200, 12, 78];
+    const leftAlumniOption = {
+      xAxis: {
+        data: ['上海', '北京', '杭州', '廣州', '深圳', '珠海', '天津', ],
+        type: 'category',
+        max: 'dataMax',
+        // show: false, // x轴上的指示数据隐藏
+        axisLabel : {
+          // formatter: '{value}',
+          textStyle: {
+            color: '#fff'
+          }
+        },
+      },
+      yAxis: {
+        show: false,
+      },
+      grid: {
+        left: '15%',
+        top: 0,
+        bottom: '15%',
+        right: 0,
+      },
+      color: [
+        '#4ba3ef'
+      ],
+      series: [
+        {
+          // realtimeSort: true, // 数据自动排序
+          //name: 'X',
+          type: 'bar',
+          data: data,
+          label: {
+            show: false, // 指示数据是否展示
+            position: 'right',
+            valueAnimation: true
+          }
+        }
+      ],
+      splitLine: {
+        show: false,
+      },
+      legend: {
+        show: false
+      },
+      animationDuration: 0,
+      animationDurationUpdate: 3000,
+      animationEasing: 'linear',
+      animationEasingUpdate: 'linear'
+    };
+    myChart.setOption(leftAlumniOption, true);
+  }
+  alumniFn();
+</script>
+

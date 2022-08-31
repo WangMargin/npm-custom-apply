@@ -1,3 +1,115 @@
-<div>
-    center
+<div class="content-center-box">
+    <div class="content-center-sub">
+        <div class="content-center-left">
+            <div class="content-center-header">
+                <div class="font-13 title">校友信息概况</div>
+                <div class="mg-t5 font-12">Overview students</div>
+            </div>
+            <div class="count-box">
+                <div class="count-box-left">
+                    <!--            入库校友统计数-->
+                    <div class="count-box-left1">
+                        <div class="font-13 title">入库校友统计数</div>
+                        <div class="sub-title">
+                            <b class="font-13">全球校友总人数</b>
+                            <div class="font-12 mg-t5">Total number of students</div>
+                        </div>
+                        <div class="count">
+                            <span class="">10,721</span><span class="font-16">人</span>
+                        </div>
+                    </div>
+                    <!--            在读学员统计数-->
+                    <div class="count-box-left2">
+
+                    </div>
+                </div>
+                <div class="count-box-right">
+                    <div id="count-year-list" style="width: 800px;height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-center-right"></div>
+    </div>
 </div>
+<script>
+    // 年份人数 堆叠 柱状图 #count-year-list
+    function countDomFn1() {
+      const countDom = document.getElementById('count-year-list');
+      const myChart = echarts.init(countDom);
+      const leftCountDom1 = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        splitLine: {
+          show: false,
+        },
+        legend: {
+          show: false
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: ['2012', '2013', '2014','2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'],
+            axisLabel : {
+              // formatter: '{value}',
+              textStyle: {
+                color: '#fff'
+              }
+            },
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            show: false,
+          }
+        ],
+
+        series: [
+          {
+            name: 'EMBA',
+            type: 'bar',
+            stack: 'Ad',
+            barWidth: 30,
+            emphasis: {
+              focus: 'series'
+            },
+            color: '#323f4c',
+            data: [220, 182, 191, 234, 34, 90, 30, 10, 9, 45, 78]
+          },
+          {
+            name: 'MBA',
+            type: 'bar',
+            stack: 'Ad',
+            emphasis: {
+              focus: 'series'
+            },
+            color: '#2152ae',
+            data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234,]
+          },
+          {
+            name: 'GFD',
+            type: 'bar',
+            stack: 'Ad',
+            emphasis: {
+              focus: 'series'
+            },
+            color: '#4f96f9',
+            data: [150, 232, 201, 154, 190, 330, 410, 220, 182, 191, 234]
+          }
+        ]
+      };
+      myChart.setOption(leftCountDom1, true);
+    }
+    countDomFn1();
+
+</script>
