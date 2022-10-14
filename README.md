@@ -1,6 +1,7 @@
 # v-component
 
 # 开发 html 2 canvas  自定义生成图片的功能
+## html生成canvas的开发页面在 /src/page/canvas/canvas.html 
 
 ## Project setup
 ```
