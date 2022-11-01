@@ -5,6 +5,7 @@
     function setBodyFontSize () {
         if (document.body) {
             document.body.style.fontSize = (12 * dpr) + 'px'
+            console.log(document.body.style.fontSize)
         }
         else {
             document.addEventListener('DOMContentLoaded', setBodyFontSize)
@@ -14,12 +15,18 @@
     // set 1rem = viewWidth / 10
     function setRemUnit () {
         var rem = docEl.clientWidth / 10
+        // if (rem > 50) {
+        //     docEl.style.fontSize = '50px'
+        // } else {
+        //     docEl.style.fontSize = rem + 'px'
+        // }
         docEl.style.fontSize = rem + 'px'
     }
     setRemUnit()
     // reset rem unit on page resize
     window.addEventListener('resize', setRemUnit)
     window.addEventListener('pageshow', function (e) {
+        console.log(e)
         if (e.persisted) {
             setRemUnit()
         }
@@ -28,7 +35,7 @@
     if (dpr >= 2) {
         var fakeBody = document.createElement('body')
         var testElement = document.createElement('div')
-        testElement.style.border = '.5px solid transparent'
+        // testElement.style.border = '.5px solid transparent'
         fakeBody.appendChild(testElement)
         docEl.appendChild(fakeBody)
         if (testElement.offsetHeight === 1) {

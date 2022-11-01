@@ -3,6 +3,7 @@
 
 <head>
     <title>pbcsf</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="./fullpage/fullpage.css" />
     <link rel="stylesheet" href="./style/common.css">
     <link href="./images/logo.svg" rel="shortcut icon">
@@ -36,7 +37,18 @@
 </div>
 <div id="recommend_card"></div>
 <!--third-->
-<div id="id_third" class="third-body body"></div>
+<div id="id_third" class="third-body"></div>
+
+<!-- 海报展示图 -->
+<div class="show-photo-box">
+    <span class="show-photo-box-close" id="handleClosePhotoBox">+</span>
+    <div class="show-photo-box-img">
+        <img src="" alt="" id="show-photo-box-img-url">
+        <div>
+            <span>请长按保存图片</span>
+        </div>
+    </div>
+</div>
 
 <script src="js/flex.js"></script>
 <!--<script src="js/html2canvas.min.js"></script>-->
@@ -80,6 +92,12 @@
         $(document).delegate('#handleCreatePoster', 'click', function () {
             CreateHtml2Canvas()
         })
+        $(document).delegate('#handleClosePhotoBox', 'click', function () {
+            // setTimeout(() => {
+            //     $('#recommend_card').toggle()
+            // }, 500)
+            $(".show-photo-box").toggle()
+        })
     }
     //  创建canvas
     function CreateHtml2Canvas() {
@@ -89,15 +107,22 @@
             dpi: window.devicePixelRatio * 2,
             scale: 2,
             width: canvas_dom.offsetWidth,
-            // height: canvas_dom.offsetHeight,
-            height: 1334,
+            height: canvas_dom.offsetHeight,
+            // height: 1334,
             scrollY: 0,
             scrollX: 0,
             useCORS: true
         }).then(canvas => {
             console.log(canvas)
             let url = canvas.toDataURL('image/png')
+            localStorage.setItem('PBCSF-PFMP', url)
             console.log(url)
+            $('#show-photo-box-img-url').attr('src', url)
+
+            setTimeout(() => {
+                $('#recommend_card').toggle()
+                $(".show-photo-box").toggle()
+            }, 500)
         }).catch(err => {
             console.log(err)
         })
