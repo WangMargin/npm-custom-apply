@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>pbcsf</title>
+    <link rel="stylesheet" type="text/css" href="./fullpage/fullpage.css" />
+    <link rel="stylesheet" href="./style/common.css">
+    <link href="./images/logo.svg" rel="shortcut icon">
+    <!--[if IE]>
+    <script type="text/javascript">
+        var console = { log: function() {} };
+    </script>
+    <![endif]-->
+
+    <script src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./fullpage/fullpage.js"></script>
+</head>
+<body>
+<div id="fullpage">
+    <div class="section">
+        <!--first-->
+        <div id="id_first" class="first-body body"></div>
+    </div>
+    <div class="section">
+        <!--second-->
+        <div id="id_second" class="second-body body"></div>
+    </div>
+    <div class="section">
+        <!--fourth-->
+        <div id="id_fourth" class="fourth-body body"></div>
+    </div>
+    <div class="section">
+        <!--fifth-->
+        <div id="id_fifth" class="fifth-body body"></div>
+    </div>
+</div>
+<div id="recommend_card"></div>
+<!--third-->
+<div id="id_third" class="third-body body"></div>
+
+<script src="js/flex.js"></script>
+<!--<script src="js/html2canvas.min.js"></script>-->
+<script src="https://list.wangyc.top/html2canvas.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#id_first").load("./pages/first.html",function(){
+            console.log('======1======')
+        });
+        $("#id_second").load("./pages/second.html",function(){
+            console.log('======2======')
+        });
+        $("#id_third").load("./pages/third.html",function(){
+            console.log('======3======')
+        });
+        $("#id_fourth").load("./pages/fourth.html",function(){
+            console.log('======4======')
+        });
+        $("#id_fifth").load("./pages/fifth.html",function(){
+            console.log('======5======')
+        });
+        $("#recommend_card").load("./pages/recommend-card.html",function(){
+            console.log('======card======')
+        });
+
+        //initialising fullpage.js in the jQuery way
+        $('#fullpage').fullpage({
+            // sectionsColor: ['#ff5f45', '#0798ec', '#fc6c7c', '#fec401'],
+            licenseKey: '999',
+            navigation: true,
+            slidesNavigation: true,
+        });
+        ToggleRecommendCard()
+    });
+    //  关闭 信息填写 card
+    function ToggleRecommendCard() {
+        $(document).delegate('#handleMyRecommend, #handleRecommendClose', 'click', function () {
+            console.log('===log')
+            $('#recommend_card').toggle()
+        })
+        $(document).delegate('#handleCreatePoster', 'click', function () {
+            CreateHtml2Canvas()
+        })
+    }
+    //  创建canvas
+    function CreateHtml2Canvas() {
+        const canvas_dom = $('#id_third')[0]
+        html2canvas(canvas_dom, {
+            backgroundColor: null,
+            dpi: window.devicePixelRatio * 2,
+            scale: 2,
+            width: canvas_dom.offsetWidth,
+            // height: canvas_dom.offsetHeight,
+            height: 1334,
+            scrollY: 0,
+            scrollX: 0,
+            useCORS: true
+        }).then(canvas => {
+            console.log(canvas)
+            let url = canvas.toDataURL('image/png')
+            console.log(url)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+</script>
+</body>
+</html>
