@@ -32,6 +32,8 @@
 <div id="recommend_card"></div>
 <!--third-->
 <div id="id_third" class="third-body"></div>
+<!-- message -->
+<div id="MessageModal" class="warning"></div>
 
 <!-- 海报展示图 -->
 <div class="show-photo-box">
@@ -52,32 +54,72 @@
 
 <!--<script src="https://list.wangyc.top/html2canvas.min.js"></script>-->
 <script>
-    $(document).ready(function(){
-        $("#id_first").load("./pages/first.html",function(){
-            console.log('======1======')
-        });
-        $("#id_second").load("./pages/second.html",function(){
-            console.log('======2======')
-        });
-        $("#id_third").load("./pages/third.html",function(){
-            console.log('======3======')
-        });
-        $("#id_fifth").load("./pages/fifth.html",function(){
-            console.log('======5======')
-        });
-        $("#recommend_card").load("./pages/recommend-card.html",function(){
-            console.log('======card======')
-        });
-
-        //initialising fullpage.js in the jQuery way
-        $('#fullpage').fullpage({
-            // sectionsColor: ['#ff5f45', '#0798ec', '#fc6c7c', '#fec401'],
-            licenseKey: '999',
-            navigation: true,
-            slidesNavigation: true,
-        });
-        ToggleRecommendCard()
-    });
+    const PFMP_URL = 'https://api.test.pbcsf.net'
+    const PFMP_API = {
+        captcha: PFMP_URL + '/admission/api/v1/account/mobile/captcha',
+        check: PFMP_URL + '/admission/api/v2/application/class/check',
+    }
+    function message(t, str) {
+      if (t === 'success') {
+        ht = '<span class="success">√</span>' + str
+      } else if (t === 'warning') {
+        ht = '<span class="warning">!</span>' + str
+      } else if (t === 'error') {
+        ht = '<span class="error">x</span>' + str
+      } else {
+        ht = '<span class="info">i</span>' + str
+      }
+      $('#MessageModal').attr('class', t)
+      $('#MessageModal').html(ht)
+      $('#MessageModal').fadeIn(500)
+      setTimeout(function() {
+        $('#MessageModal').fadeOut(500)
+      }, 2500)
+    }
+    function ValidateMobile(phone) {
+      return !(!/^1[3456789]\d{9}$/.test(phone) || phone === '');
+    }
+    // 获取check接口信息
+    function CheckFormFn() {
+      const tel = $('#recommendFormMobile')[0].value
+      const captcha = $('#recommendFormCaptcha')[0].value
+      const name = $('#recommendFormName')[0].value
+      if (!name) {
+        message('warning', '请检查姓名是否填写')
+        return
+      } else if (!ValidateMobile(tel)) {
+        message('warning', '请检查手机号是否填写')
+        return
+      } else if (!captcha) {
+        message('warning', '请检查验证码是否填写')
+        return
+      }
+      const obj = {
+        product_id: '5f8fc73b5c262aad45191379',
+        name,
+        mobile: tel,
+        captcha
+      }
+      PFMP_API.check
+      $.ajax({
+        type: 'post',
+        url: PFMP_API.check,
+        data: JSON.stringify(obj),
+        cache:false,
+        contentType: 'application/json',
+        success: function(res) {
+          console.log(res)
+          if (res.code === 200) {
+            message('success', res.msg)
+          } else {
+            message('warning', res.msg)
+          }
+        },
+        error: function(err) {
+          console.log(err)
+        }
+      })
+    }
     //  关闭 信息填写 card
     function ToggleRecommendCard() {
         $(document).delegate('#handleMyRecommend, #handleRecommendClose', 'click', function () {
@@ -85,18 +127,15 @@
             $('#recommend_card').toggle()
         })
         $(document).delegate('#handleCreatePoster', 'click', function () {
-            CreateQRcode()
+            CheckFormFn()
+            // CreateQRcode()
         })
         $(document).delegate('#handleClosePhotoBox', 'click', function () {
-            // setTimeout(() => {
-            //     $('#recommend_card').toggle()
-            // }, 500)
             $(".show-photo-box").toggle()
         })
     }
     // 生成二维码
     function CreateQRcode() {
-      console.log('qr - code=====')
       var qrcode = new QRCode(document.getElementById("createQRcode"), {
         text: "https://list.wangyc.top/pbcsf/home.html",
         width: 65,
@@ -105,7 +144,7 @@
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.H
       });
-      console.log(qrcode, '==============')
+      // 创建 海报
       CreateHtml2Canvas()
     }
     //  创建canvas
@@ -122,19 +161,119 @@
             scrollX: 0,
             useCORS: true
         }).then(canvas => {
-            console.log(canvas)
             let url = canvas.toDataURL('image/png')
             localStorage.setItem('PBCSF-PFMP', url)
-            console.log(url)
-            $('#recommend_card').toggle()
+            $('#recommend_card').toggle() // 关闭 信息填写弹窗
             setTimeout(() => {
-              $('#show-photo-box-img-url').attr('src', url)
-              $(".show-photo-box").toggle()
-            }, 1500)
+              $('#show-photo-box-img-url').attr('src', url) // 待展示分享图片链接赋值
+              $(".show-photo-box").toggle() // 展示分享图片弹窗
+            }, 500)
         }).catch(err => {
             console.log(err)
         })
     }
+    // 获取验证码
+    function GetCaptchaFn() {
+      const tel = $('#recommendFormMobile')[0].value
+      const obj = {
+        'mobile': tel
+      }
+      $.ajax({
+        type: 'post',
+        url: PFMP_API.captcha,
+        data: JSON.stringify(obj),
+        cache:false,
+        contentType: 'application/json',
+        success: function(res) {
+          console.log(res)
+          if (res.code === 200) {
+            message('success', res.msg)
+          } else {
+            message('warning', res.msg)
+          }
+        },
+        error: function(err) {
+          console.log(err)
+        }
+      })
+      // $.post(PFMP_API.captcha, { 'mobile': tel },function(data,status){
+      //   alert("Data: " + data + "nStatus: " + status);
+      // });
+    }
+    // 验证码按钮
+    function captchaTime() {
+      console.log(']]]]]')
+      $(document).delegate('#getCaptcha', 'click', function() {
+        const tel = $('#recommendFormMobile')[0].value
+        console.log(tel)
+        if (!ValidateMobile(tel)) {
+          message('warning', '手机号有误')
+          return
+        }
+        $(".get-captcha").hide()
+        $(".get-captcha-count").show()
+        GetCaptchaFn()
+        var second = 10
+        $(".get-captcha-count").text((second) + "s重新获取")
+        var interval = setInterval(function () {
+          second--
+          $(".get-captcha-count").text((second) + "s重新获取")
+          if (second === -1) {
+            $(".get-captcha").text("重发验证码")
+            clearInterval(interval)
+            $(".get-captcha-count").hide()
+            $(".get-captcha").show()
+          }
+        }, 1000)
+      })
+    }
+    // 头像上传
+    function UploadAvatar () {
+      $(document).delegate('#UploadAvatarDom', 'change', function() {
+        if (!this.files[0]) { return }
+        if (this.files[0].size > (10*1024*1024)) {
+          message('warning', '请上传小于10M的图片')
+          return
+        }
+        const fileReader = new FileReader()
+        fileReader.readAsDataURL(this.files[0])
+        fileReader.onload = ()=>{
+          avatarBase64 = fileReader.result
+          localStorage.setItem('PBCSF-PFMP-AVATAR', avatarBase64)
+          $('#avatarData').attr('src', avatarBase64).show()
+        }
+      })
+    }
+
+    $(document).ready(function(){
+      $("#id_first").load("./pages/first.html",function(){
+        console.log('======1======')
+      });
+      $("#id_second").load("./pages/second.html",function(){
+        console.log('======2======')
+      });
+      $("#id_third").load("./pages/third.html",function(){
+        console.log('======3======')
+      });
+      $("#id_fifth").load("./pages/fifth.html",function(){
+        console.log('======5======')
+      });
+      $("#recommend_card").load("./pages/recommend-card.html",function(){
+        console.log('======card======')
+      });
+
+      //initialising fullpage.js in the jQuery way
+      $('#fullpage').fullpage({
+        // sectionsColor: ['#ff5f45', '#0798ec', '#fc6c7c', '#fec401'],
+        licenseKey: '999',
+        navigation: true,
+        slidesNavigation: true,
+      });
+      ToggleRecommendCard()
+      captchaTime()
+      UploadAvatar()
+
+    });
 </script>
 </body>
 </html>
