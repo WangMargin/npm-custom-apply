@@ -4,6 +4,7 @@
 <head>
     <title>pbcsf</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" type="text/css" href="./fullpage/fullpage.css" />
     <link rel="stylesheet" href="./style/common.css">
     <link href="./images/logo.svg" rel="shortcut icon">
@@ -12,7 +13,6 @@
         var console = { log: function() {} };
     </script>
     <![endif]-->
-    <script type="text/javascript" src="./fullpage/fullpage.js"></script>
 </head>
 <body>
 <div id="fullpage">
@@ -46,6 +46,8 @@
 
 <script src="js/html2canvas.min.js"></script>
 <script src="./js/jquery.js"></script>
+<script type="text/javascript" src="./fullpage/fullpage.js"></script>
+<script src="./js/qrcode.min.js"></script>
 <script src="js/flex.js"></script>
 
 <!--<script src="https://list.wangyc.top/html2canvas.min.js"></script>-->
@@ -83,7 +85,7 @@
             $('#recommend_card').toggle()
         })
         $(document).delegate('#handleCreatePoster', 'click', function () {
-            CreateHtml2Canvas()
+            CreateQRcode()
         })
         $(document).delegate('#handleClosePhotoBox', 'click', function () {
             // setTimeout(() => {
@@ -91,6 +93,20 @@
             // }, 500)
             $(".show-photo-box").toggle()
         })
+    }
+    // 生成二维码
+    function CreateQRcode() {
+      console.log('qr - code=====')
+      var qrcode = new QRCode(document.getElementById("createQRcode"), {
+        text: "https://list.wangyc.top/pbcsf/home.html",
+        width: 65,
+        height: 65,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+      console.log(qrcode, '==============')
+      CreateHtml2Canvas()
     }
     //  创建canvas
     function CreateHtml2Canvas() {
@@ -110,12 +126,11 @@
             let url = canvas.toDataURL('image/png')
             localStorage.setItem('PBCSF-PFMP', url)
             console.log(url)
-            $('#show-photo-box-img-url').attr('src', url)
-
+            $('#recommend_card').toggle()
             setTimeout(() => {
-                $('#recommend_card').toggle()
-                $(".show-photo-box").toggle()
-            }, 500)
+              $('#show-photo-box-img-url').attr('src', url)
+              $(".show-photo-box").toggle()
+            }, 1500)
         }).catch(err => {
             console.log(err)
         })
