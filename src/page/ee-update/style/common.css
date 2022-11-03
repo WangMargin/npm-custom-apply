@@ -250,7 +250,7 @@ body {
   width:8rem;
   /*height: 6rem;*/
   margin: 0 auto 0;
-  margin-top: calc((100vh - 10rem)/2) ;
+  margin-top: calc((100vh - 15rem)/2) ;
   background: #ffffff;
   padding: .5rem;
   box-sizing: border-box;
@@ -276,16 +276,20 @@ body {
 .recommend-form > ul > li input {
   border: none;
   border-bottom: 1px solid #333333;
-  height: .7rem;
   width: 4.5rem;
   padding: 0 .2rem;
   box-sizing: border-box;
   font-size: .32rem;
+  height: .8rem;
+  line-height: .8rem;
 }
 .recommend-form > ul > li .captcha-i {
   border: none;
-  border-bottom: 1px solid #333333;
   width: 2.5rem;
+  height: .8rem;
+  line-height: .8rem;
+  border-bottom: 1px solid #333333;
+
 }
 .recommend-form > ul > li .captcha-i input {
   border: none;
@@ -321,6 +325,9 @@ input:focus {
   background: #ffffff;
   border: none;
   box-shadow: none;
+}
+input {
+  border-radius: 0!important;
 }
 .recommend-close {
   font-size: 1rem;
@@ -687,7 +694,7 @@ input:focus {
   z-index: 100000;
   left: 50%;
   width: 7.2rem;
-  margin-left: -4rem;
+  margin-left: -3.6rem;
   top: 1rem;
   display: none;
   line-height: 1.3;
