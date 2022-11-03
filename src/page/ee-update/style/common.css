@@ -203,10 +203,10 @@ body {
 }
 .second-content-handle-btn {
   font-weight: 600;
-  font-size: .32rem;
+  font-size: .36rem;
   width: 2.6667rem;
-  padding: .14rem 0;
-  border-radius: .27rem;
+  padding: .3rem 0;
+  border-radius: .5rem;
   margin-top: .72rem;
   display: inline-block;
   color: #ffffff;
@@ -243,14 +243,14 @@ body {
   background: rgba(0,0,0, 0.4);
   left: 0;
   top: 0;
-  /*display: none;*/
+  display: none;
   z-index: 1000;
 }
 .recommend-form {
   width:8rem;
   /*height: 6rem;*/
   margin: 0 auto 0;
-  margin-top: calc((100vh - 6rem)/2) ;
+  margin-top: calc((100vh - 10rem)/2) ;
   background: #ffffff;
   padding: .5rem;
   box-sizing: border-box;
@@ -263,7 +263,7 @@ body {
   padding: .2rem 0;
 }
 .recommend-form > ul > li label {
-  width: 1.5rem;
+  /*width: 1.5rem;*/
   display: inline-block;
   text-align: right;
   margin-right: .2rem;
@@ -335,12 +335,12 @@ input:focus {
   -moz-transform: rotate(45deg);
 }
 .recommend-form-submit {
-  background: #e0c09a;
+  background: #bb133e;
   color: #ffffff;
   font-size: .32rem;
   width: 4rem;
-  height: .7rem;
-  line-height: .7rem;
+  height: .8rem;
+  line-height: .8rem;
   margin: .4rem auto 0;
   border-radius: .4rem;
   text-align: center;
@@ -562,8 +562,8 @@ input:focus {
   display: inline-block;
 }
 .f-content .fourth-desc > p {
-  line-height: 1.2;
-  padding: 5px 0;
+  line-height: 1.7;
+  padding: 0px 0 5px;
 }
 .f-content .fourth-desc {
   text-align: left;
@@ -787,4 +787,93 @@ input:focus {
   /*!*transform: translateX(-50%);*!*/
   /*top: 0;*/
   /*opacity: 0;*/
+}
+.consult-tel-content {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: none;
+  background: rgba(0,0,0,.4);
+}
+.consult-tel-content-card {
+  margin: 0 auto;
+  width: 7.2rem;
+  margin-top: calc((100vh - 5rem)/2);
+  min-height: 5rem;
+  padding: .4rem;
+  box-sizing: border-box;
+  border-radius: .4rem;
+  background: #ffffff;
+  /*box-shadow: 0 4px 10px #e0c09a;*/
+}
+.consult-tel-content-card-logo {
+  text-align: right;
+}
+.consult-tel-content-card-logo img {
+  width: 2rem;
+  height: auto;
+}
+.consult-list {
+  font-size: .4rem;
+  line-height: 2;
+  padding-top: .3rem;
+}
+.consult-list > div > a {
+  font-size: .4rem;
+  line-height: 2;
+  text-align: center;
+  padding-left: .8rem;
+  color: #bb133e;
+  /*text-decoration: none;*/
+}
+.hide {
+  display: none;
+}
+.red {
+  color: #bb133e;
+  font-size: .32rem;
+}
+.description-avatar {
+  font-size: .2rem;
+  text-align: center;
+  color: #bfbfbf;
+  padding-top: .2rem;
+}
+
+.recommend-rule-content {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: none;
+  background: rgba(0,0,0,.4);
+}
+.recommend-rule-content-card {
+  margin: 0 auto;
+  width: 7.2rem;
+  /*margin-top: calc((100vh - 5rem)/2);*/
+  margin-top: 2.5rem;
+  height: auto;
+  max-height: 13rem;
+  overflow: scroll;
+  padding: .4rem .4rem .8rem .4rem ;
+  box-sizing: border-box;
+  border-radius: .4rem;
+  background: #ffffff;
+  /*box-shadow: 0 4px 10px #e0c09a;*/
+}
+.recommend-rule-content-card-title {
+  font-size: .45rem;
+  text-align: center;
+  padding-bottom: .4rem;
+}
+.recommend-rule-content-card-des {
+  font-size: .32rem;
+  line-height: 1.5;
+  text-indent: .64rem;
 }

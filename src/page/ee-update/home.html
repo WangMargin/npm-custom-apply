@@ -46,6 +46,18 @@
     </div>
 </div>
 
+<!-- 查看规则 -->
+<div class="recommend-rule-content">
+    <div class="recommend-rule-content-card">
+        <div class="recommend-rule-content-card-title">规则标题</div>
+        <div class="recommend-rule-content-card-des">规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</div>
+        <div class="recommend-rule-content-card-des">规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</div>
+        <div class="recommend-rule-content-card-des">规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</div>
+        <div class="recommend-rule-content-card-des">规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</div>
+        <div class="recommend-rule-content-card-des">规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则</div>
+    </div>
+</div>
+
 <script src="js/html2canvas.min.js"></script>
 <script src="./js/jquery.js"></script>
 <script type="text/javascript" src="./fullpage/fullpage.js"></script>
@@ -86,12 +98,15 @@
       const name = $('#recommendFormName')[0].value
       if (!name) {
         message('warning', '请检查姓名是否填写')
+        $('#recommendFormName').focus()
         return
       } else if (!ValidateMobile(tel)) {
         message('warning', '请检查手机号是否填写')
+        $('#recommendFormMobile').focus()
         return
       } else if (!captcha) {
         message('warning', '请检查验证码是否填写')
+        $('#recommendFormCaptcha').focus()
         return
       }
       const obj = {
@@ -221,12 +236,13 @@
         console.log(tel)
         if (!ValidateMobile(tel)) {
           message('warning', '手机号有误')
+          $('#recommendFormMobile').focus()
           return
         }
         $(".get-captcha").hide()
         $(".get-captcha-count").show()
         GetCaptchaFn()
-        var second = 10
+        var second = 60
         $(".get-captcha-count").text((second) + "s重新获取")
         var interval = setInterval(function () {
           second--
@@ -258,6 +274,22 @@
       })
     }
 
+    // 展示推荐规则
+    function ToggleRecommendRule () {
+      $('#handleRecommendRule').on('click', function() {
+        $('.recommend-rule-content').toggle()
+      })
+      $(document).delegate('#handleRecommendRule', 'click', function() {
+        $('.recommend-rule-content').toggle()
+      })
+      $('.recommend-rule-content').on('click', function() {
+        $('.recommend-rule-content').toggle()
+      })
+      $('.recommend-rule-content-card').on('click', function() {
+        event.stopPropagation()
+      })
+    }
+
     $(document).ready(function(){
       $("#id_first").load("./pages/first.html",function(){
         console.log('======1======')
@@ -274,6 +306,9 @@
       $("#recommend_card").load("./pages/recommend-card.html",function(){
         console.log('======card======')
       });
+      $('#recommendCardForm').on('click', function() {
+        event.stopPropagation()
+      })
 
       //initialising fullpage.js in the jQuery way
       $('#fullpage').fullpage({
@@ -285,7 +320,7 @@
       ToggleRecommendCard()
       captchaTime()
       UploadAvatar()
-
+      ToggleRecommendRule()
     });
 </script>
 </body>

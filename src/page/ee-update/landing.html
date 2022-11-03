@@ -29,19 +29,38 @@
         <div class="f-content">
             <div class="images">
                 <div class="fourth-desc">
-                    <p class="font24">诚挚邀请您加入</p>
-                    <p class="font24">清华五道口金融管理专业课<span class="project-no"></span></p>
-                    <p class="font24">报名填写：</p>
-                    <p class="font24 font-600 colfff mg-10">推荐码【<span class="enrollment-no"></span>】</p><br>
-                    <p class="font24 font-600 colfff">推荐人【<span class="user-docx-enrollment—name"></span>】</p>
-                    <p class="font28 font-600">可享受学费95折优惠</p>
+                    <p class="font24">清华大学五道口金融学院诚挚地邀请你加入<strong>“金融管理专业课”</strong>千人大家庭！</p>
+                    <p class="font24 hide">诚挚邀请您加入</p>
+                    <p class="font24 hide">清华五道口金融管理专业课<span class="project-no"></span></p>
+                    <p class="font24">
+                        五期将于2022年12月中旬开学，报名需填写推荐码
+                        <strong>【<span class="enrollment-no"></span>】</strong>
+                        及推荐人
+                        <strong>【<span class="user-docx-enrollment—name"></span>】</strong>，可享受学费95折优惠。
+                    </p>
+<!--                    <p class="font24 font-600 colfff mg-10 hide">推荐码【<span class="enrollment-no"></span>】</p><br>-->
+<!--                    <p class="font24 font-600 colfff hide">推荐人【<span class="user-docx-enrollment—name"></span>】</p>-->
+                    <p class="font28 font-600 hide hide">可享受学费95折优惠</p>
                 </div>
             </div>
         </div>
         <div class="fourth-handle">
-            <span>咨询电话</span>
-            <span>了解课程</span>
-            <span>在线报名</span>
+            <span id="handleConsultTel">咨询电话</span>
+            <span id="handleUnderstandClass">了解课程</span>
+            <span id="handleOnlineEnrollment">在线报名</span>
+        </div>
+    </div>
+</div>
+<div class="consult-tel-content">
+    <div class="consult-tel-content-card">
+        <div class="consult-tel-content-card-logo">
+            <img src="./images/pbcsf.png" alt="">
+        </div>
+        <div class="consult-list">
+            咨询电话：
+            <div><a href="tel:010-62783294">010-62783294</a> 牛老师</div>
+            <div><a href="tel:010-62781401">010-62781401</a> 郭老师</div>
+            <div><a href="tel:010-62787176">010-62787176</a> 孙老师</div>
         </div>
     </div>
 </div>
@@ -66,7 +85,26 @@
     // admission.refactor.pbcsf.net
 
     // 咨询电话 了解课程 在线报名 追加点击事件
-
+    $('.consult-tel-content, #handleConsultTel').on('click', function() {
+      console.log('=================')
+      $('.consult-tel-content').toggle()
+      event.stopPropagation()
+    })
+    $('.consult-tel-content-card').on('click', function() {
+      event.stopPropagation()
+    })
+    // 了解课程
+    $('#handleUnderstandClass').on('click', function() {
+      window.open('http://ee.pbcsf.tsinghua.edu.cn/web/m/008/index.php')
+    })
+    // 在线报名
+    $('#handleOnlineEnrollment').on('click', function() {
+      if (window.host === 'admission.refactor.pbcsf.net') {
+        window.open('http://admission.refactor.pbcsf.net/ee/pfmp/apply?src=g01ay3')
+      } else {
+        window.open('https://admission.pbcsf.tsinghua.edu.cn/ee/pfmp/apply?src=g01ay3')
+      }
+    })
   })
 </script>
 </body>
