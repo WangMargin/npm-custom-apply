@@ -22,18 +22,18 @@
         <div class="fourth-user">
             <img src="" alt="" class="fourth-user-avatar">
             <div class="fourth-user-docx">
-                <div>我是金融管理专业课<strong>X期学长</strong></div>
-                <div class="fourth-user-docx-name"><strong>欧阳</strong></div>
+                <div>我是金融管理专业课<strong class="user-docx-enrollment">X期学长</strong></div>
+                <div class="fourth-user-docx-name"><strong class="user-docx-enrollment—name">欧阳</strong></div>
             </div>
         </div>
         <div class="f-content">
             <div class="images">
                 <div class="fourth-desc">
                     <p class="font24">诚挚邀请您加入</p>
-                    <p class="font24">清华五道口金融管理专业课五期</p>
+                    <p class="font24">清华五道口金融管理专业课<span class="project-no"></span></p>
                     <p class="font24">报名填写：</p>
-                    <p class="font24 font-600 colfff mg-10">推荐码【FM2211】</p>
-                    <p class="font24 font-600 colfff">推荐人【姓名】</p>
+                    <p class="font24 font-600 colfff mg-10">推荐码【<span class="enrollment-no"></span>】</p><br>
+                    <p class="font24 font-600 colfff">推荐人【<span class="user-docx-enrollment—name"></span>】</p>
                     <p class="font28 font-600">可享受学费95折优惠</p>
                 </div>
             </div>
@@ -46,8 +46,29 @@
     </div>
 </div>
 <script src="./js/jquery.js"></script>
-
 <script src="js/flex.js"></script>
+<script>
+  // 解析 url 参数
+  function queryData (name) {
+    const search = location.search; // 返回类似于 ?a=10&b=20&c=30
+    const res = new URLSearchParams(search);
+    return res.get(name)
+  }
+  $(document).ready(function() {
+    if (queryData('g') === '男性') {
+      $('.fourth-user .user-docx-enrollment').text(queryData('p_c') + '学长')
+    } else {
+      $('.fourth-user .user-docx-enrollment').text(queryData('p_c') + '学姐')
+    }
+    $('.fourth-body .user-docx-enrollment—name').text(queryData('name'))
+    $('.fourth-body .project-no').text(queryData('p_c'))
+    $('.fourth-body .enrollment-no').text(queryData('e_n'))
+    // admission.refactor.pbcsf.net
+
+    // 咨询电话 了解课程 在线报名 追加点击事件
+
+  })
+</script>
 </body>
 </html>
 

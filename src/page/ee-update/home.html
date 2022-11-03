@@ -49,7 +49,7 @@
 <script src="js/html2canvas.min.js"></script>
 <script src="./js/jquery.js"></script>
 <script type="text/javascript" src="./fullpage/fullpage.js"></script>
-<script src="./js/qrcode.min.js"></script>
+<script src="./js/qrcode.js"></script>
 <script src="js/flex.js"></script>
 
 <!--<script src="https://list.wangyc.top/html2canvas.min.js"></script>-->
@@ -110,7 +110,19 @@
         success: function(res) {
           console.log(res)
           if (res.code === 200) {
-            message('success', res.msg)
+            if (res.data.gender === '男性') {
+              $('.third-user-docx .user-docx-enrollment').text(res.data.shortcut + '学长')
+            } else {
+              $('.third-user-docx .user-docx-enrollment').text(res.data.shortcut + '学姐')
+            }
+            $('.third-user-docx .user-docx-enrollment—name').text(obj.name || '姓名')
+            $('.third-content-images2 .third-project-name').text(res.data.project)
+            if (localStorage.getItem('PBCSF-PFMP-AVATAR')) {
+              $('#createQRcode').html('')
+              $('.third-user-avatar').attr('src', localStorage.getItem('PBCSF-PFMP-AVATAR'))
+            }
+            const url = window.location.origin + '/landing.html?name=' + obj.name + '&p_c=' + res.data.shortcut + '&g=' + res.data.gender + '&c=' + res.data.enrollment_no
+            CreateQRcodeFn(url) // 生成分享卡片
           } else {
             message('warning', res.msg)
           }
@@ -128,16 +140,16 @@
         })
         $(document).delegate('#handleCreatePoster', 'click', function () {
             CheckFormFn()
-            // CreateQRcode()
         })
         $(document).delegate('#handleClosePhotoBox', 'click', function () {
             $(".show-photo-box").toggle()
         })
     }
     // 生成二维码
-    function CreateQRcode() {
+    function CreateQRcodeFn(u) {
+      console.log(u)
       var qrcode = new QRCode(document.getElementById("createQRcode"), {
-        text: "https://list.wangyc.top/pbcsf/home.html",
+        text: u,
         width: 65,
         height: 65,
         colorDark : "#000000",
@@ -159,7 +171,8 @@
             // height: 1334,
             scrollY: 0,
             scrollX: 0,
-            useCORS: true
+            useCORS: true,
+            background: "white"
         }).then(canvas => {
             let url = canvas.toDataURL('image/png')
             localStorage.setItem('PBCSF-PFMP', url)

@@ -352,15 +352,25 @@ input:focus {
 
 /*@import "./third.css";*/
 .third-body {
-  position: fixed;z-index: -10;left: 0;bottom:0;width: 375px;height: 620px;overflow: hidden;
-  background-image: url("../images/third-bg.png");
-  padding: 0 30px;
+  position: fixed;
+  z-index: -10;
+  left: 0;
+  bottom:0;
+  width: 375px;
+  height: 620px;
+  overflow: hidden;
+  background: #ffffff;
   background-size:cover;
-  background-position: center;
-  background-repeat: no-repeat;
   box-sizing: border-box;
 }
-.third-content {}
+.third-content {
+  background-image: url("../images/third-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 375px;
+  height: 620px;
+  /*padding: 0 30px;*/
+}
 .third-content .title {
   padding-top: 45px;
   /*padding-top: 1.2rem;*/
@@ -371,6 +381,7 @@ input:focus {
 .third-content .title .logo-image {
   width: 106px;
   /*width: 2.8533rem;*/
+  padding-right: 30px;
   height: 30px;
   /*height: 0.8rem;*/
 }
